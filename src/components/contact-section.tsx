@@ -11,8 +11,6 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import {
   CheckCircle,
   Code,
@@ -24,93 +22,11 @@ import {
   Zap,
 } from 'lucide-react';
 import type React from 'react';
-import { useEffect, useRef, useState } from 'react';
-
-gsap.registerPlugin(ScrollTrigger);
+import { useState } from 'react';
 
 export function ContactSection() {
-  const sectionRef = useRef(null);
-  const formRef = useRef(null);
-  const contactInfoRef = useRef(null);
-  const titleRef = useRef(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [focusedField, setFocusedField] = useState<string | null>(null);
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      // Title entrance animation
-      gsap.fromTo(
-        titleRef.current,
-        {
-          opacity: 0,
-          y: 100,
-          scale: 0.8,
-        },
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 1.2,
-          ease: 'back.out(1.7)',
-          scrollTrigger: {
-            trigger: titleRef.current,
-            start: 'top 80%',
-            end: 'bottom 20%',
-            toggleActions: 'play none none reverse',
-          },
-        }
-      );
-
-      // Form entrance animation
-      gsap.fromTo(
-        formRef.current,
-        {
-          opacity: 0,
-          x: -100,
-          rotateY: -15,
-        },
-        {
-          opacity: 1,
-          x: 0,
-          rotateY: 0,
-          duration: 1,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: formRef.current,
-            start: 'top 80%',
-            end: 'bottom 20%',
-            toggleActions: 'play none none reverse',
-          },
-        }
-      );
-
-      // Contact info entrance animation
-      gsap.fromTo(
-        contactInfoRef.current,
-        {
-          opacity: 0,
-          x: 100,
-          rotateY: 15,
-        },
-        {
-          opacity: 1,
-          x: 0,
-          rotateY: 0,
-          duration: 1,
-          ease: 'power3.out',
-          delay: 0.2,
-          scrollTrigger: {
-            trigger: contactInfoRef.current,
-            start: 'top 80%',
-            end: 'bottom 20%',
-            toggleActions: 'play none none reverse',
-          },
-        }
-      );
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, []);
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -122,21 +38,21 @@ export function ContactSection() {
     {
       icon: Mail,
       label: 'Email',
-      value: 'sage@example.com',
-      href: 'mailto:sage@example.com',
+      value: 'oluwasegunsam56@gmail.com',
+      href: 'mailto:oluwasegunsam56@gmail.com',
       color: 'from-blue-500 to-cyan-500',
     },
     {
       icon: Phone,
       label: 'Phone',
-      value: '+1 (555) 123-4567',
-      href: 'tel:+15551234567',
+      value: '+2349048095407',
+      href: 'tel:+2349048095407',
       color: 'from-green-500 to-emerald-500',
     },
     {
       icon: MapPin,
       label: 'Location',
-      value: 'San Francisco, CA',
+      value: 'Lagos, Nigeria',
       href: '#',
       color: 'from-purple-500 to-pink-500',
     },
@@ -145,7 +61,6 @@ export function ContactSection() {
   return (
     <section
       id='contact'
-      ref={sectionRef}
       className='min-h-screen w-full bg-gradient-to-br from-background via-muted/20 to-background py-20 px-4 md:px-8 relative overflow-hidden'
     >
       {/* Enhanced Floating Background Elements */}
@@ -177,12 +92,12 @@ export function ContactSection() {
       </div>
 
       <div className='container mx-auto max-w-6xl relative z-10'>
-        <div ref={titleRef} className='text-center mb-16'>
-          <h2 className='text-5xl md:text-7xl font-black mb-6 bg-gradient-to-r from-foreground via-primary to-blue-600 bg-clip-text text-transparent'>
+        <div className='text-center mb-16'>
+          <h2 className='text-5xl md:text-7xl font-black mb-6 bg-gradient-to-r from-foreground via-primary to-blue-600 bg-clip-text text-transparent animate-slide-up'>
             Let&apos;s Connect
           </h2>
-          <div className='w-24 h-1 bg-gradient-to-r from-primary to-blue-500 mx-auto rounded-full mb-6 animate-pulse' />
-          <p className='text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto'>
+          <div className='w-24 h-1 bg-gradient-to-r from-primary to-blue-500 mx-auto rounded-full mb-6 animate-scale-in' />
+          <p className='text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto animate-fade-in'>
             Ready to bring your ideas to life? Let&apos;s discuss your next
             project
           </p>
@@ -190,10 +105,7 @@ export function ContactSection() {
 
         <div className='grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-5xl mx-auto'>
           {/* Enhanced Contact Form */}
-          <Card
-            ref={formRef}
-            className='bg-card/80 backdrop-blur-sm border-border/50 shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-[1.02] group'
-          >
+          <Card className='bg-card/80 backdrop-blur-sm border-border/50 shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-[1.02] group animate-slide-in-left'>
             <CardHeader className='pb-6'>
               <CardTitle className='text-3xl font-bold bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent group-hover:from-primary group-hover:to-blue-600 transition-all duration-300'>
                 Send Message
@@ -324,7 +236,7 @@ export function ContactSection() {
           </Card>
 
           {/* Enhanced Contact Information */}
-          <div ref={contactInfoRef} className='space-y-8'>
+          <div className='space-y-8 animate-slide-in-right'>
             <Card className='bg-card/80 backdrop-blur-sm border-border/50 shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-[1.02]'>
               <CardHeader>
                 <CardTitle className='text-2xl font-bold'>
@@ -339,8 +251,10 @@ export function ContactSection() {
                   <a
                     key={item.label}
                     href={item.href}
-                    className='flex items-center space-x-4 p-4 rounded-lg bg-background/50 hover:bg-background/80 transition-all duration-300 hover:scale-[1.05] hover:shadow-lg group border border-transparent hover:border-primary/20'
-                    style={{ animationDelay: `${index * 0.1}s` }}
+                    className='flex items-center space-x-4 p-4 rounded-lg bg-background/50 hover:bg-background/80 transition-all duration-300 hover:scale-[1.05] hover:shadow-lg group border border-transparent hover:border-primary/20 animate-bounce-in'
+                    style={{
+                      animationDelay: `${index * 100}ms`,
+                    }}
                   >
                     <div
                       className={`p-3 rounded-full bg-gradient-to-r ${item.color} bg-opacity-10 group-hover:bg-opacity-20 transition-all duration-300 group-hover:scale-110`}
@@ -465,6 +379,56 @@ export function ContactSection() {
             transform: translateY(0);
           }
         }
+        @keyframes slide-up {
+          from {
+            opacity: 0;
+            transform: translateY(100px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        @keyframes scale-in {
+          from {
+            opacity: 0;
+            transform: scale(0);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+        @keyframes slide-in-left {
+          from {
+            opacity: 0;
+            transform: translateX(-100px) rotateY(-15deg);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0) rotateY(0);
+          }
+        }
+        @keyframes slide-in-right {
+          from {
+            opacity: 0;
+            transform: translateX(100px) rotateY(15deg);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0) rotateY(0);
+          }
+        }
+        @keyframes bounce-in {
+          from {
+            opacity: 0;
+            transform: scale(0);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
         .animate-float-slow {
           animation: float-slow 6s ease-in-out infinite;
         }
@@ -482,6 +446,21 @@ export function ContactSection() {
         }
         .animate-fade-in {
           animation: fade-in 0.5s ease-out;
+        }
+        .animate-slide-up {
+          animation: slide-up 1.2s ease-out;
+        }
+        .animate-scale-in {
+          animation: scale-in 0.8s ease-out;
+        }
+        .animate-slide-in-left {
+          animation: slide-in-left 1s ease-out;
+        }
+        .animate-slide-in-right {
+          animation: slide-in-right 1s ease-out 0.2s both;
+        }
+        .animate-bounce-in {
+          animation: bounce-in 0.8s ease-out;
         }
       `}</style>
     </section>

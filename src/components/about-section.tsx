@@ -11,7 +11,7 @@ import {
   TestTube,
   Zap,
 } from 'lucide-react';
-import { useLayoutEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
 
 const expertiseAreas = [
   {
@@ -81,106 +81,10 @@ const stats = [
 ];
 
 export function AboutSection() {
-  const [isGSAPLoaded, setIsGSAPLoaded] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLDivElement>(null);
   const statsRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement[]>([]);
-
-  useLayoutEffect(() => {
-    if (typeof window === 'undefined') return;
-
-    const loadGSAP = async () => {
-      try {
-        const { gsap } = await import('gsap');
-        const { ScrollTrigger } = await import('gsap/ScrollTrigger');
-
-        gsap.registerPlugin(ScrollTrigger);
-
-        // Animate title entrance
-        if (titleRef.current) {
-          gsap.fromTo(
-            titleRef.current.children,
-            { y: 100, opacity: 0 },
-            {
-              y: 0,
-              opacity: 1,
-              duration: 1.2,
-              stagger: 0.2,
-              ease: 'back.out(1.7)',
-              scrollTrigger: {
-                trigger: titleRef.current,
-                start: 'top 80%',
-                toggleActions: 'play none none reverse',
-              },
-            }
-          );
-        }
-
-        // Animate stats
-        if (statsRef.current) {
-          gsap.fromTo(
-            statsRef.current.children,
-            { scale: 0, opacity: 0 },
-            {
-              scale: 1,
-              opacity: 1,
-              duration: 0.8,
-              stagger: 0.1,
-              ease: 'back.out(1.7)',
-              scrollTrigger: {
-                trigger: statsRef.current,
-                start: 'top 80%',
-                toggleActions: 'play none none reverse',
-              },
-            }
-          );
-        }
-
-        // Animate expertise cards
-        cardsRef.current.forEach((card, index) => {
-          if (card) {
-            gsap.fromTo(
-              card,
-              { x: index % 2 === 0 ? -100 : 100, opacity: 0, rotateY: 15 },
-              {
-                x: 0,
-                opacity: 1,
-                rotateY: 0,
-                duration: 1,
-                delay: index * 0.1,
-                ease: 'power3.out',
-                scrollTrigger: {
-                  trigger: card,
-                  start: 'top 85%',
-                  toggleActions: 'play none none reverse',
-                },
-              }
-            );
-          }
-        });
-
-        setIsGSAPLoaded(true);
-      } catch (error) {
-        console.warn(
-          'GSAP failed to load, falling back to CSS animations',
-          error
-        );
-        setIsGSAPLoaded(true);
-      }
-    };
-
-    loadGSAP();
-
-    return () => {
-      // Cleanup ScrollTrigger instances
-      if (typeof window !== 'undefined') {
-        import('gsap/ScrollTrigger').then(({ ScrollTrigger }) => {
-          ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-        });
-      }
-    };
-  }, []);
 
   return (
     <section
@@ -206,26 +110,14 @@ export function AboutSection() {
       <div className='container mx-auto max-w-7xl text-center relative z-10'>
         {/* Section Title */}
         <div ref={titleRef} className='mb-16'>
-          <div
-            className={`inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 backdrop-blur-sm border border-primary/20 text-primary text-sm font-medium mb-6 hover:bg-primary/15 transition-colors duration-300 ${
-              !isGSAPLoaded ? 'animate-fade-in' : ''
-            }`}
-          >
+          <div className='inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 backdrop-blur-sm border border-primary/20 text-primary text-sm font-medium mb-6 hover:bg-primary/15 transition-colors duration-300 animate-fade-in'>
             <Lightbulb className='h-4 w-4' />
             Who I Am
           </div>
-          <h2
-            className={`text-5xl md:text-7xl font-black mb-6 bg-gradient-to-r from-foreground via-primary to-blue-600 bg-clip-text text-transparent ${
-              !isGSAPLoaded ? 'animate-slide-up' : ''
-            }`}
-          >
+          <h2 className='text-5xl md:text-7xl font-black mb-6 bg-gradient-to-r from-foreground via-primary to-blue-600 bg-clip-text text-transparent animate-slide-up'>
             About Me
           </h2>
-          <div
-            className={`w-24 h-1 bg-gradient-to-r from-primary to-blue-500 mx-auto rounded-full shadow-lg shadow-primary/25 ${
-              !isGSAPLoaded ? 'animate-scale-in' : ''
-            }`}
-          />
+          <div className='w-24 h-1 bg-gradient-to-r from-primary to-blue-500 mx-auto rounded-full shadow-lg shadow-primary/25 animate-scale-in' />
         </div>
 
         {/* Profile Summary */}
@@ -253,11 +145,9 @@ export function AboutSection() {
             {stats.map((stat, index) => (
               <div
                 key={stat.label}
-                className={`text-center group ${
-                  !isGSAPLoaded ? 'animate-bounce-in' : ''
-                }`}
+                className='text-center group animate-bounce-in'
                 style={{
-                  animationDelay: !isGSAPLoaded ? `${index * 100}ms` : '0ms',
+                  animationDelay: `${index * 100}ms`,
                 }}
               >
                 <div className='text-4xl md:text-5xl font-black bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent mb-2 group-hover:scale-110 transition-transform duration-300'>
@@ -292,11 +182,9 @@ export function AboutSection() {
                 ref={(el) => {
                   if (el) cardsRef.current[index] = el;
                 }}
-                className={`group relative p-6 rounded-2xl bg-card/60 backdrop-blur-sm border border-border/50 shadow-lg transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 hover:bg-card/80 cursor-pointer ${
-                  !isGSAPLoaded ? 'animate-slide-in-left' : ''
-                }`}
+                className='group relative p-6 rounded-2xl bg-card/60 backdrop-blur-sm border border-border/50 shadow-lg transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 hover:bg-card/80 cursor-pointer animate-slide-in-left'
                 style={{
-                  animationDelay: !isGSAPLoaded ? `${index * 150}ms` : '0ms',
+                  animationDelay: `${index * 150}ms`,
                 }}
               >
                 {/* Hover Glow Effect */}
