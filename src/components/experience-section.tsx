@@ -15,7 +15,7 @@ import {
   Users,
   Zap,
 } from 'lucide-react'; // Added Check icon
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -186,36 +186,36 @@ export function ExperienceSection() {
   const titleRef = useRef(null);
   const cardsRef = useRef<HTMLDivElement[]>([]);
 
-  useEffect(() => {
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: 'top 75%',
-        end: 'bottom top',
-        toggleActions: 'play none none reverse',
-      },
-    });
-    tl.fromTo(
-      titleRef.current,
-      { opacity: 0, y: 100 },
-      { opacity: 1, y: 0, duration: 1, ease: 'power3.out' }
-    );
-    tl.fromTo(
-      cardsRef.current,
-      { opacity: 0, y: 80, rotateX: 15, scale: 0.9 },
-      {
-        opacity: 1,
-        y: 0,
-        rotateX: 0,
-        scale: 1,
-        duration: 1,
-        ease: 'power3.out',
-        stagger: 0.3,
-      },
-      '-=0.7'
-    );
-    return () => tl.kill();
-  }, []);
+  // useEffect(() => {
+  //   const tl = gsap.timeline({
+  //     scrollTrigger: {
+  //       trigger: sectionRef.current,
+  //       start: 'top 75%',
+  //       end: 'bottom top',
+  //       toggleActions: 'play none none reverse',
+  //     },
+  //   });
+  //   tl.fromTo(
+  //     titleRef.current,
+  //     { opacity: 0, y: 100 },
+  //     { opacity: 1, y: 0, duration: 1, ease: 'power3.out' }
+  //   );
+  //   tl.fromTo(
+  //     cardsRef.current,
+  //     { opacity: 0, y: 80, rotateX: 15, scale: 0.9 },
+  //     {
+  //       opacity: 1,
+  //       y: 0,
+  //       rotateX: 0,
+  //       scale: 1,
+  //       duration: 1,
+  //       ease: 'power3.out',
+  //       stagger: 0.3,
+  //     },
+  //     '-=0.7'
+  //   );
+  //   return () => tl.kill();
+  // }, []);
 
   return (
     <section
@@ -226,7 +226,7 @@ export function ExperienceSection() {
       {/* Background Elements */}
       <div className='absolute inset-0 bg-grid-white/[0.02] bg-[size:60px_60px]' />
       <div className='absolute top-1/4 right-1/4 w-96 h-96 bg-primary/3 rounded-full blur-3xl' />
-      <div className='absolute bottom-1/4 left-1/4 w-72 h-72 bg-purple-500/3 rounded-full blur-3xl' />
+      <div className='absolute bottom-1/4 left-1/4 w-72 h-72 bg-blue-500/3 rounded-full blur-3xl' />
 
       <div className='container mx-auto max-w-7xl relative z-10'>
         <div ref={titleRef} className='text-center mb-20'>
@@ -234,10 +234,10 @@ export function ExperienceSection() {
             <Calendar className='h-4 w-4' />
             Professional Journey
           </div>
-          <h2 className='text-5xl md:text-7xl font-black mb-6 bg-gradient-to-r from-foreground via-primary to-purple-600 bg-clip-text text-transparent'>
+          <h2 className='text-5xl md:text-7xl font-black mb-6 bg-gradient-to-r from-foreground via-primary to-blue-600 bg-clip-text text-transparent'>
             Experience
           </h2>
-          <div className='w-24 h-1 bg-gradient-to-r from-primary to-purple-500 mx-auto rounded-full mb-6' />
+          <div className='w-24 h-1 bg-gradient-to-r from-primary to-blue-500 mx-auto rounded-full mb-6' />
           <p className='text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed'>
             A journey through innovative companies, impactful projects, and
             continuous growth in the ever-evolving world of technology
@@ -363,7 +363,7 @@ export function ExperienceSection() {
         <div className='text-center mt-16'>
           <Button
             size='lg'
-            className='bg-gradient-to-r from-primary to-green-600 hover:from-primary/90 hover:to-orange-600/90 text-white shadow-2xl text-lg px-8 py-6 rounded-2xl transition-all duration-500 hover:scale-105'
+            className='bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-orange-600/90 text-white shadow-2xl text-lg px-8 py-6 rounded-2xl transition-all duration-500 hover:scale-105'
           >
             <ExternalLink className='mr-2 h-5 w-5' />
             View Full Resume

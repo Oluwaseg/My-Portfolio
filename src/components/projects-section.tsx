@@ -67,41 +67,41 @@ export function ProjectsSection() {
     fetchProjects();
   }, []);
 
-  useEffect(() => {
-    if (!loading && projects.length > 0) {
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top 75%',
-          end: 'bottom top',
-          toggleActions: 'play none none reverse',
-        },
-      });
+  // useEffect(() => {
+  //   if (!loading && projects.length > 0) {
+  //     const tl = gsap.timeline({
+  //       scrollTrigger: {
+  //         trigger: sectionRef.current,
+  //         start: 'top 75%',
+  //         end: 'bottom top',
+  //         toggleActions: 'play none none reverse',
+  //       },
+  //     });
 
-      tl.fromTo(
-        titleRef.current,
-        { opacity: 0, y: 100 },
-        { opacity: 1, y: 0, duration: 1, ease: 'power3.out' }
-      );
-      tl.fromTo(
-        cardsRef.current,
-        { opacity: 0, y: 80, scale: 0.9 },
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 0.8,
-          ease: 'power3.out',
-          stagger: 0.15,
-        },
-        '-=0.5'
-      );
-    }
+  //     tl.fromTo(
+  //       titleRef.current,
+  //       { opacity: 0, y: 100 },
+  //       { opacity: 1, y: 0, duration: 1, ease: 'power3.out' }
+  //     );
+  //     tl.fromTo(
+  //       cardsRef.current,
+  //       { opacity: 0, y: 80, scale: 0.9 },
+  //       {
+  //         opacity: 1,
+  //         y: 0,
+  //         scale: 1,
+  //         duration: 0.8,
+  //         ease: 'power3.out',
+  //         stagger: 0.15,
+  //       },
+  //       '-=0.5'
+  //     );
+  //   }
 
-    return () => {
-      ScrollTrigger.getAll().forEach((st) => st.kill());
-    };
-  }, [loading, projects]);
+  //   return () => {
+  //     ScrollTrigger.getAll().forEach((st) => st.kill());
+  //   };
+  // }, [loading, projects]);
 
   if (loading) {
     return (
@@ -125,7 +125,12 @@ export function ProjectsSection() {
       >
         <div className='text-center'>
           <p className='text-xl text-red-500 mb-4'>{error}</p>
-          <Button onClick={() => window.location.reload()}>Try Again</Button>
+          <Button
+            className='bg-blue-600'
+            onClick={() => window.location.reload()}
+          >
+            Try Again
+          </Button>
         </div>
       </section>
     );
@@ -143,14 +148,14 @@ export function ProjectsSection() {
       {/* Background Elements */}
       <div className='absolute inset-0 bg-grid-white/[0.02] bg-[size:50px_50px]' />
       <div className='absolute top-1/3 right-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl' />
-      <div className='absolute bottom-1/3 left-1/4 w-72 h-72 bg-purple-500/5 rounded-full blur-3xl' />
+      <div className='absolute bottom-1/3 left-1/4 w-72 h-72 bg-blue-500/5 rounded-full blur-3xl' />
 
       <div className='container mx-auto max-w-7xl relative z-10'>
         <div ref={titleRef} className='text-center mb-20'>
-          <h2 className='text-5xl md:text-7xl font-black mb-6 bg-gradient-to-r from-foreground via-primary to-purple-600 bg-clip-text text-transparent'>
+          <h2 className='text-5xl md:text-7xl font-black mb-6 bg-gradient-to-r from-foreground via-primary to-blue-600 bg-clip-text text-transparent'>
             Featured Work
           </h2>
-          <div className='w-24 h-1 bg-gradient-to-r from-primary to-purple-500 mx-auto rounded-full mb-6' />
+          <div className='w-24 h-1 bg-gradient-to-r from-primary to-blue-500 mx-auto rounded-full mb-6' />
           <p className='text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto'>
             A showcase of projects that push boundaries and deliver exceptional
             user experiences
@@ -170,7 +175,7 @@ export function ProjectsSection() {
                   ref={(el) => (cardsRef.current[index] = el as HTMLDivElement)}
                   className='group relative overflow-hidden bg-card/80 backdrop-blur-sm border-border/50 shadow-2xl hover:shadow-3xl transition-all duration-500 hover:-translate-y-2'
                 >
-                  <div className='absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500' />
+                  <div className='absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500' />
 
                   <div className='relative w-full h-64 bg-gradient-to-br from-muted to-muted/50 overflow-hidden'>
                     <Image

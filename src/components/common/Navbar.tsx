@@ -3,25 +3,20 @@
 import { useLenis } from '@/components/smooth-scroll-provider';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { ArrowUpRight, Download, Menu, Moon, Sun, X } from 'lucide-react';
-import { useTheme } from 'next-themes';
+import { ArrowUpRight, Download, Menu, X } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useMemo, useRef, useState, forwardRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { ModeToggle } from './Switch';
 
 type SectionId = 'hero' | 'about' | 'experience' | 'projects' | 'contact';
 
-export const Navbar = forwardRef<HTMLElement, React.HTMLProps<HTMLElement>>(function Navbar(props, ref) {
+export function Navbar() {
   const [activeSection, setActiveSection] = useState<SectionId>('hero');
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { theme, setTheme } = useTheme();
   const lenis = useLenis();
   const navRef = useRef<HTMLElement>(null);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   const sections: { id: SectionId; name: string; number: string }[] = useMemo(
     () => [
@@ -74,7 +69,7 @@ export const Navbar = forwardRef<HTMLElement, React.HTMLProps<HTMLElement>>(func
   return (
     <>
       <nav
-        ref={ref || navRef}
+        ref={navRef}
         className={cn(
           'fixed top-0 left-0 right-0 z-50 transition-all duration-700 ease-out',
           isScrolled
@@ -91,10 +86,19 @@ export const Navbar = forwardRef<HTMLElement, React.HTMLProps<HTMLElement>>(func
               onClick={() => scrollToSection('hero')}
             >
               <div className='relative'>
-                <div className='w-10 h-10 bg-gradient-to-br from-primary via-green-500 to-orange-500 rounded-xl flex items-center justify-center font-black text-white text-lg shadow-lg group-hover:shadow-primary/25 transition-all duration-300 group-hover:scale-110 group-hover:rotate-3'>
+                {/* <div className='w-10 h-10 bg-gradient-to-br from-primary via-blue-500 to-orange-500 rounded-xl flex items-center justify-center font-black text-white text-lg shadow-lg group-hover:shadow-primary/25 transition-all duration-300 group-hover:scale-110 group-hover:rotate-3'>
                   SO
+                </div> */}
+                <div className=''>
+                  <Image
+                    src={'/logo.png'}
+                    alt='logo'
+                    width={40}
+                    height={60}
+                    unoptimized
+                  />
                 </div>
-                <div className='absolute inset-0 bg-gradient-to-br from-primary via-green-500 to-orange-500 rounded-xl blur-lg opacity-0 group-hover:opacity-30 transition-opacity duration-300' />
+                <div className='absolute inset-0 bg-gradient-to-br from-primary via-blue-500 to-orange-500 rounded-xl blur-lg opacity-0 group-hover:opacity-30 transition-opacity duration-300' />
               </div>
               <div className='hidden sm:block'>
                 <div className='text-xl font-black bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent group-hover:from-primary group-hover:to-purple-500 transition-all duration-300'>
@@ -128,7 +132,7 @@ export const Navbar = forwardRef<HTMLElement, React.HTMLProps<HTMLElement>>(func
                       <span>{section.name}</span>
                     </span>
                     {activeSection === section.id && (
-                      <div className='absolute inset-0 bg-gradient-to-r from-primary/5 via-green-500/5 to-orange-500/5 rounded-xl' />
+                      <div className='absolute inset-0 bg-gradient-to-r from-primary/5 via-blue-500/5 to-orange-500/5 rounded-xl' />
                     )}
                   </Button>
                 ))}
@@ -137,20 +141,7 @@ export const Navbar = forwardRef<HTMLElement, React.HTMLProps<HTMLElement>>(func
 
             {/* Actions */}
             <div className='flex items-center space-x-3'>
-              <Button
-                variant='ghost'
-                size='icon'
-                onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-                className='rounded-xl hover:bg-accent/50 transition-all duration-300 hover:scale-110'
-              >
-                {mounted ? (
-                  theme === 'dark' ? (
-                    <Sun className='h-5 w-5' />
-                  ) : (
-                    <Moon className='h-5 w-5' />
-                  )
-                ) : null}
-              </Button>
+              <ModeToggle />
               <Button
                 variant='outline'
                 size='sm'
@@ -193,7 +184,7 @@ export const Navbar = forwardRef<HTMLElement, React.HTMLProps<HTMLElement>>(func
               className={cn(
                 'w-full justify-start text-lg font-medium py-6 rounded-2xl transition-all duration-300 group',
                 activeSection === section.id
-                  ? 'text-primary bg-gradient-to-r from-primary/10 to-green-500/10 shadow-lg'
+                  ? 'text-primary bg-gradient-to-r from-primary/10 to-blue-500/10 shadow-lg'
                   : 'text-muted-foreground hover:text-foreground hover:bg-accent/50'
               )}
               onClick={() => scrollToSection(section.id)}
@@ -208,7 +199,7 @@ export const Navbar = forwardRef<HTMLElement, React.HTMLProps<HTMLElement>>(func
           ))}
         </div>
         <div className='mt-8 pt-8 border-t border-border/50'>
-          <Button className='w-full bg-gradient-to-r from-primary to-green-600 text-white rounded-2xl py-6 text-lg font-medium group'>
+          <Button className='w-full bg-gradient-to-r from-primary to-blue-600 text-white rounded-2xl py-6 text-lg font-medium group'>
             <Download className='mr-2 h-5 w-5 group-hover:scale-110 transition-transform duration-300' />
             Download Resume
             <ArrowUpRight className='ml-2 h-4 w-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300' />
@@ -217,4 +208,4 @@ export const Navbar = forwardRef<HTMLElement, React.HTMLProps<HTMLElement>>(func
       </div>
     </>
   );
-});
+}

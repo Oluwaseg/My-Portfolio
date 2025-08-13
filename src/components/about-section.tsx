@@ -11,7 +11,7 @@ import {
   Server,
   TestTube,
 } from 'lucide-react';
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -49,7 +49,7 @@ const expertiseAreas = [
       'OAuth2',
     ],
     icon: Server,
-    color: 'from-green-500 to-emerald-500',
+    color: 'from-blue-500 to-emerald-500',
   },
   {
     title: 'Data Management',
@@ -87,51 +87,51 @@ export function AboutSection() {
   const expertiseTitleRef = useRef(null);
   const expertiseItemsRef = useRef<HTMLDivElement[]>([]);
 
-  useEffect(() => {
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: 'top 75%',
-        end: 'bottom top',
-        toggleActions: 'play none none reverse',
-      },
-    });
+  // useEffect(() => {
+  //   const tl = gsap.timeline({
+  //     scrollTrigger: {
+  //       trigger: sectionRef.current,
+  //       start: 'top 75%',
+  //       end: 'bottom top',
+  //       toggleActions: 'play none none reverse',
+  //     },
+  //   });
 
-    tl.fromTo(
-      titleRef.current,
-      { opacity: 0, y: 100 },
-      { opacity: 1, y: 0, duration: 1, ease: 'power3.out' }
-    );
-    tl.fromTo(
-      profileSummaryRef.current,
-      { opacity: 0, y: 80 },
-      { opacity: 1, y: 0, duration: 1, ease: 'power3.out' },
-      '-=0.7'
-    );
-    tl.fromTo(
-      expertiseTitleRef.current,
-      { opacity: 0, y: 60 },
-      { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' },
-      '-=0.5'
-    );
-    tl.fromTo(
-      expertiseItemsRef.current,
-      { opacity: 0, y: 40, scale: 0.95 },
-      {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        duration: 0.7,
-        ease: 'power3.out',
-        stagger: 0.15,
-      },
-      '-=0.3'
-    );
+  //   tl.fromTo(
+  //     titleRef.current,
+  //     { opacity: 0, y: 100 },
+  //     { opacity: 1, y: 0, duration: 1, ease: 'power3.out' }
+  //   );
+  //   tl.fromTo(
+  //     profileSummaryRef.current,
+  //     { opacity: 0, y: 80 },
+  //     { opacity: 1, y: 0, duration: 1, ease: 'power3.out' },
+  //     '-=0.7'
+  //   );
+  //   tl.fromTo(
+  //     expertiseTitleRef.current,
+  //     { opacity: 0, y: 60 },
+  //     { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' },
+  //     '-=0.5'
+  //   );
+  //   tl.fromTo(
+  //     expertiseItemsRef.current,
+  //     { opacity: 0, y: 40, scale: 0.95 },
+  //     {
+  //       opacity: 1,
+  //       y: 0,
+  //       scale: 1,
+  //       duration: 0.7,
+  //       ease: 'power3.out',
+  //       stagger: 0.15,
+  //     },
+  //     '-=0.3'
+  //   );
 
-    return () => {
-      tl.kill();
-    };
-  }, []);
+  //   return () => {
+  //     tl.kill();
+  //   };
+  // }, []);
 
   return (
     <section
@@ -149,10 +149,10 @@ export function AboutSection() {
             <Lightbulb className='h-4 w-4' />
             Who I Am
           </div>
-          <h2 className='text-5xl md:text-7xl font-black mb-6 bg-gradient-to-r from-foreground via-primary to-green-600 bg-clip-text text-transparent'>
+          <h2 className='text-5xl md:text-7xl font-black mb-6 bg-gradient-to-r from-foreground via-primary to-blue-600 bg-clip-text text-transparent'>
             About Me
           </h2>
-          <div className='w-24 h-1 bg-gradient-to-r from-primary to-green-500 mx-auto rounded-full' />
+          <div className='w-24 h-1 bg-gradient-to-r from-primary to-blue-500 mx-auto rounded-full' />
         </div>
 
         {/* Profile Summary */}

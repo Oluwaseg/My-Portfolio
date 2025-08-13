@@ -3,7 +3,6 @@
 import { useLenis } from '@/components/smooth-scroll-provider';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { gsap } from 'gsap';
 import {
   ArrowDown,
   ArrowUpRight,
@@ -25,7 +24,6 @@ export function HeroSection() {
   const subtitleRef = useRef<HTMLParagraphElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
   const socialRef = useRef<HTMLDivElement>(null);
-  const statsRef = useRef<HTMLDivElement>(null);
 
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
@@ -40,46 +38,46 @@ export function HeroSection() {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
-  useEffect(() => {
-    const tl = gsap.timeline({ delay: 0.8 });
-    tl.fromTo(
-      titleRef.current,
-      { opacity: 0, y: 120, scale: 0.8, rotateX: 15 },
-      {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        rotateX: 0,
-        duration: 1.4,
-        ease: 'power4.out',
-      }
-    );
-    tl.fromTo(
-      subtitleRef.current,
-      { opacity: 0, y: 60, filter: 'blur(10px)' },
-      {
-        opacity: 1,
-        y: 0,
-        filter: 'blur(0px)',
-        duration: 1.2,
-        ease: 'power3.out',
-      },
-      '-=1'
-    );
-    tl.fromTo(
-      ctaRef.current,
-      { opacity: 0, y: 40, scale: 0.8 },
-      { opacity: 1, y: 0, scale: 1, duration: 1, ease: 'back.out(1.4)' },
-      '-=0.8'
-    );
-    tl.fromTo(
-      [socialRef.current, statsRef.current],
-      { opacity: 0, y: 30 },
-      { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out', stagger: 0.2 },
-      '-=0.6'
-    );
-    return () => tl.kill();
-  }, []);
+  // useEffect(() => {
+  //   const tl = gsap.timeline({ delay: 0.8 });
+  //   tl.fromTo(
+  //     titleRef.current,
+  //     { opacity: 0, y: 120, scale: 0.8, rotateX: 15 },
+  //     {
+  //       opacity: 1,
+  //       y: 0,
+  //       scale: 1,
+  //       rotateX: 0,
+  //       duration: 1.4,
+  //       ease: 'power4.out',
+  //     }
+  //   );
+  //   tl.fromTo(
+  //     subtitleRef.current,
+  //     { opacity: 0, y: 60, filter: 'blur(10px)' },
+  //     {
+  //       opacity: 1,
+  //       y: 0,
+  //       filter: 'blur(0px)',
+  //       duration: 1.2,
+  //       ease: 'power3.out',
+  //     },
+  //     '-=1'
+  //   );
+  //   tl.fromTo(
+  //     ctaRef.current,
+  //     { opacity: 0, y: 40, scale: 0.8 },
+  //     { opacity: 1, y: 0, scale: 1, duration: 1, ease: 'back.out(1.4)' },
+  //     '-=0.8'
+  //   );
+  //   tl.fromTo(
+  //     [socialRef.current, statsRef.current],
+  //     { opacity: 0, y: 30 },
+  //     { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out', stagger: 0.2 },
+  //     '-=0.6'
+  //   );
+  //   return () => tl.kill();
+  // }, []);
 
   const scrollToSection = (id: string) => {
     if (lenis) {
@@ -123,14 +121,14 @@ export function HeroSection() {
                 <span className='block bg-gradient-to-r from-foreground via-foreground to-muted-foreground bg-clip-text text-transparent'>
                   Hi, I&apos;m
                 </span>
-                <span className='block bg-gradient-to-r from-primary via-green-500 to-orange-500 bg-clip-text text-transparent'>
+                <span className='block bg-gradient-to-r from-primary via-blue-500 to-orange-500 bg-clip-text text-transparent'>
                   Samuel Oluwasegun
                 </span>
               </h1>
               <div className='flex flex-wrap items-center gap-4 text-2xl sm:text-3xl lg:text-4xl font-light text-muted-foreground'>
                 <Badge
                   variant='outline'
-                  className='text-lg px-4 py-2 bg-primary/10 border-primary/20 text-primary font-semibold min-w-[280px] justify-center' // Adjusted min-w for full phrase
+                  className='text-lg px-4 py-2 bg-gradient-to-r from-primary via-blue-500 to-orange-500 bg-clip-text text-transparent border-primary/20  font-semibold min-w-[280px] justify-center' // Adjusted min-w for full phrase
                 >
                   <AutoTypingText
                     roles={[
@@ -155,7 +153,7 @@ export function HeroSection() {
               digital experiences that blend cutting-edge technology with
               intuitive design, delivering solutions that don&apos;t just
               work—they{' '}
-              <span className='text-green-500 font-semibold bg-green-500/10 px-2 py-1 rounded-lg'>
+              <span className='text-blue-500 font-semibold bg-blue-500/10 px-2 py-1 rounded-lg'>
                 inspire
               </span>
               .
@@ -165,7 +163,7 @@ export function HeroSection() {
             <div ref={ctaRef} className='flex flex-col sm:flex-row gap-4'>
               <Button
                 size='lg'
-                className='group relative bg-gradient-to-r from-primary via-green-600 to-orange-600 hover:from-primary/90 hover:via-green-600/90 hover:to-orange-600/90 text-white shadow-2xl text-lg px-8 py-6 rounded-2xl transition-all duration-500 hover:scale-105 hover:shadow-primary/25 border-0 overflow-hidden'
+                className='group relative bg-gradient-to-r from-primary via-blue-600 to-orange-600 hover:from-primary/90 hover:via-blue-600/90 hover:to-orange-600/90 text-white shadow-2xl text-lg px-8 py-6 rounded-2xl transition-all duration-500 hover:scale-105 hover:shadow-primary/25 border-0 overflow-hidden'
                 onClick={() => scrollToSection('projects')}
               >
                 <span className='relative z-10 flex items-center gap-3'>
@@ -216,7 +214,7 @@ export function HeroSection() {
                     href: 'mailto:samueloluwasegun999@gmail.com',
                     label: 'Email',
                     username: 'samueloluwasegun999@gmail.com',
-                    color: 'hover:text-green-400',
+                    color: 'hover:text-blue-400',
                   },
                   {
                     icon: Phone,

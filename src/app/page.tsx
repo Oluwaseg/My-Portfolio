@@ -7,11 +7,13 @@ import { ExperienceSection } from '@/components/experience-section';
 import { HeroSection } from '@/components/hero-section';
 import { ProjectsSection } from '@/components/projects-section';
 import { ThemeProvider } from '@/components/providers/ThemeProvider';
+import { ScrollProgress } from '@/components/scroll-progress';
 
 export default function Page() {
   return (
     <ThemeProvider>
       <div className='relative min-h-screen bg-background text-foreground'>
+        <ScrollProgress />
         <Navbar />
         <main>
           <HeroSection />
