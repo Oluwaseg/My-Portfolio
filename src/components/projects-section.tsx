@@ -172,7 +172,9 @@ export function ProjectsSection() {
               {featuredProjects.map((project, index) => (
                 <Card
                   key={project._id}
-                  ref={(el) => (cardsRef.current[index] = el as HTMLDivElement)}
+                  ref={(el) => {
+                    cardsRef.current[index] = el as HTMLDivElement;
+                  }}
                   className='group relative overflow-hidden bg-card/80 backdrop-blur-sm border-border/50 shadow-2xl hover:shadow-3xl transition-all duration-500 hover:-translate-y-2'
                 >
                   <div className='absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500' />
@@ -285,10 +287,10 @@ export function ProjectsSection() {
               {otherProjects.map((project, index) => (
                 <Card
                   key={project._id}
-                  ref={(el) =>
-                    (cardsRef.current[featuredProjects.length + index] =
-                      el as HTMLDivElement)
-                  }
+                  ref={(el) => {
+                    cardsRef.current[featuredProjects.length + index] =
+                      el as HTMLDivElement;
+                  }}
                   className='group relative overflow-hidden bg-card/60 backdrop-blur-sm border-border/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1'
                 >
                   <div className='relative w-full h-48 bg-gradient-to-br from-muted to-muted/50 overflow-hidden'>

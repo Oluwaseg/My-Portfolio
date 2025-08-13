@@ -11,7 +11,7 @@ import {
   Server,
   TestTube,
 } from 'lucide-react';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -87,51 +87,65 @@ export function AboutSection() {
   const expertiseTitleRef = useRef(null);
   const expertiseItemsRef = useRef<HTMLDivElement[]>([]);
 
-  // useEffect(() => {
-  //   const tl = gsap.timeline({
-  //     scrollTrigger: {
-  //       trigger: sectionRef.current,
-  //       start: 'top 75%',
-  //       end: 'bottom top',
-  //       toggleActions: 'play none none reverse',
-  //     },
-  //   });
+  useEffect(() => {
+    // Ensure all refs are available before creating animations
+    if (
+      !sectionRef.current ||
+      !titleRef.current ||
+      !profileSummaryRef.current ||
+      !expertiseTitleRef.current
+    ) {
+      return;
+    }
 
-  //   tl.fromTo(
-  //     titleRef.current,
-  //     { opacity: 0, y: 100 },
-  //     { opacity: 1, y: 0, duration: 1, ease: 'power3.out' }
-  //   );
-  //   tl.fromTo(
-  //     profileSummaryRef.current,
-  //     { opacity: 0, y: 80 },
-  //     { opacity: 1, y: 0, duration: 1, ease: 'power3.out' },
-  //     '-=0.7'
-  //   );
-  //   tl.fromTo(
-  //     expertiseTitleRef.current,
-  //     { opacity: 0, y: 60 },
-  //     { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' },
-  //     '-=0.5'
-  //   );
-  //   tl.fromTo(
-  //     expertiseItemsRef.current,
-  //     { opacity: 0, y: 40, scale: 0.95 },
-  //     {
-  //       opacity: 1,
-  //       y: 0,
-  //       scale: 1,
-  //       duration: 0.7,
-  //       ease: 'power3.out',
-  //       stagger: 0.15,
-  //     },
-  //     '-=0.3'
-  //   );
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: 'top 75%',
+        end: 'bottom top',
+        toggleActions: 'play none none reverse',
+      },
+    });
 
-  //   return () => {
-  //     tl.kill();
-  //   };
-  // }, []);
+    tl.fromTo(
+      titleRef.current,
+      { opacity: 0, y: 100 },
+      { opacity: 1, y: 0, duration: 1, ease: 'power3.out' }
+    );
+    tl.fromTo(
+      profileSummaryRef.current,
+      { opacity: 0, y: 80 },
+      { opacity: 1, y: 0, duration: 1, ease: 'power3.out' },
+      '-=0.7'
+    );
+    tl.fromTo(
+      expertiseTitleRef.current,
+      { opacity: 0, y: 60 },
+      { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' },
+      '-=0.5'
+    );
+
+    // Only animate expertise items if they exist
+    if (expertiseItemsRef.current.length > 0) {
+      tl.fromTo(
+        expertiseItemsRef.current,
+        { opacity: 0, y: 40, scale: 0.95 },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.7,
+          ease: 'power3.out',
+          stagger: 0.15,
+        },
+        '-=0.3'
+      );
+    }
+
+    return () => {
+      tl.kill();
+    };
+  }, []);
 
   return (
     <section
@@ -161,16 +175,16 @@ export function AboutSection() {
           className='mb-20 max-w-4xl mx-auto text-muted-foreground space-y-6'
         >
           <p className='text-xl md:text-2xl leading-relaxed'>
-            I’m a{' '}
-            <span className='text-primary font-semibold'>
+            I&apos;m a
+            <span className='ml-1 text-primary font-semibold'>
               full-stack software engineer
-            </span>{' '}
+            </span>
             with 4+ years of experience building user-centric web applications
-            from concept to production. I led a redesign of Finchat’s dashboard,
-            improving load times by 30% and boosting user satisfaction by 20%.
-            During my tenure at Noma Gaming, I developed a matchmaking system
-            that enhanced game session stability and reduced connection errors
-            by 25%.
+            from concept to production. I led a redesign of Finchat&apos;s
+            dashboard, improving load times by 30% and boosting user
+            satisfaction by 20%. During my tenure at Noma Gaming, I developed a
+            matchmaking system that enhanced game session stability and reduced
+            connection errors by 25%.
           </p>
         </div>
 
@@ -191,9 +205,9 @@ export function AboutSection() {
             return (
               <div
                 key={area.title}
-                ref={(el) =>
-                  (expertiseItemsRef.current[index] = el as HTMLDivElement)
-                }
+                ref={(el) => {
+                  expertiseItemsRef.current[index] = el as HTMLDivElement;
+                }}
                 className='relative p-6 rounded-2xl bg-card/60 backdrop-blur-sm border border-border/50 shadow-lg transition-all duration-500 hover:shadow-xl hover:-translate-y-1'
               >
                 <div className='flex items-center gap-4 mb-4'>
@@ -205,7 +219,7 @@ export function AboutSection() {
                   </div>
                   {/* Title and Level */}
                   <h4 className='text-2xl font-bold bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent'>
-                    {area.title}{' '}
+                    {area.title}
                     <span className='text-lg font-normal text-muted-foreground/80 ml-2'>
                       {area.level}
                     </span>

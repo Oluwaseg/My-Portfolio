@@ -88,11 +88,12 @@ export function ContactSection() {
       <div className='container mx-auto max-w-6xl relative z-10'>
         <div className='text-center mb-16'>
           <h2 className='text-5xl md:text-7xl font-black mb-6 bg-gradient-to-r from-foreground via-primary to-blue-600 bg-clip-text text-transparent'>
-            Let's Connect
+            Let&apos;s Connect
           </h2>
           <div className='w-24 h-1 bg-gradient-to-r from-primary to-blue-500 mx-auto rounded-full mb-6' />
           <p className='text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto'>
-            Ready to bring your ideas to life? Let's discuss your next project
+            Ready to bring your ideas to life? Let&apos;s discuss your next
+            project
           </p>
         </div>
 
@@ -107,7 +108,8 @@ export function ContactSection() {
                 Send Message
               </CardTitle>
               <CardDescription className='text-lg text-muted-foreground'>
-                Fill out the form below and I'll get back to you within 24 hours
+                Fill out the form below and I&apos;ll get back to you within 24
+                hours
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -193,7 +195,7 @@ export function ContactSection() {
                     Message Sent!
                   </h3>
                   <p className='text-muted-foreground'>
-                    Thank you for reaching out. I'll get back to you soon!
+                    Thank you for reaching out. I&apos;ll get back to you soon!
                   </p>
                 </div>
               )}
@@ -237,11 +239,11 @@ export function ContactSection() {
             <Card className='bg-gradient-to-br from-primary/10 via-blue-500/10 to-orange-500/10 backdrop-blur-sm border-border/50 shadow-2xl'>
               <CardContent className='p-8 text-center'>
                 <h3 className='text-2xl font-bold mb-4 bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent'>
-                  Let's Build Something Amazing
+                  Let&apos;s Build Something Amazing
                 </h3>
                 <p className='text-muted-foreground mb-6'>
                   Whether you have a project in mind or just want to chat about
-                  technology, I'm always excited to connect with fellow
+                  technology, I&apos;m always excited to connect with fellow
                   innovators.
                 </p>
                 <div className='flex justify-center space-x-4'>

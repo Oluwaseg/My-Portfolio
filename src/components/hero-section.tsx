@@ -197,23 +197,23 @@ export function HeroSection() {
                 {[
                   {
                     icon: Github,
-                    href: 'https://github.com/samueloluwasegun',
+                    href: 'https://github.com/oluwaseg',
                     label: 'GitHub',
-                    username: 'samueloluwasegun',
+                    username: 'oluwaseg',
                     color: 'hover:text-gray-400',
                   },
                   {
                     icon: Linkedin,
-                    href: 'https://linkedin.com/in/samueloluwasegun',
+                    href: 'https://www.linkedin.com/in/samuel-oluwasegun-39ab37253',
                     label: 'LinkedIn',
-                    username: '/in/samueloluwasegun',
+                    username: '/in/samuel-oluwasegun-39ab37253',
                     color: 'hover:text-blue-400',
                   },
                   {
                     icon: Mail,
-                    href: 'mailto:samueloluwasegun999@gmail.com',
+                    href: 'mailto:oluwasegunsam56@gmail.com',
                     label: 'Email',
-                    username: 'samueloluwasegun999@gmail.com',
+                    username: 'oluwasegunsam56@gmail.com',
                     color: 'hover:text-blue-400',
                   },
                   {

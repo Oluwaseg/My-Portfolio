@@ -186,37 +186,6 @@ export function ExperienceSection() {
   const titleRef = useRef(null);
   const cardsRef = useRef<HTMLDivElement[]>([]);
 
-  // useEffect(() => {
-  //   const tl = gsap.timeline({
-  //     scrollTrigger: {
-  //       trigger: sectionRef.current,
-  //       start: 'top 75%',
-  //       end: 'bottom top',
-  //       toggleActions: 'play none none reverse',
-  //     },
-  //   });
-  //   tl.fromTo(
-  //     titleRef.current,
-  //     { opacity: 0, y: 100 },
-  //     { opacity: 1, y: 0, duration: 1, ease: 'power3.out' }
-  //   );
-  //   tl.fromTo(
-  //     cardsRef.current,
-  //     { opacity: 0, y: 80, rotateX: 15, scale: 0.9 },
-  //     {
-  //       opacity: 1,
-  //       y: 0,
-  //       rotateX: 0,
-  //       scale: 1,
-  //       duration: 1,
-  //       ease: 'power3.out',
-  //       stagger: 0.3,
-  //     },
-  //     '-=0.7'
-  //   );
-  //   return () => tl.kill();
-  // }, []);
-
   return (
     <section
       id='experience'
@@ -248,7 +217,9 @@ export function ExperienceSection() {
           {experiences.map((exp, index) => (
             <Card
               key={exp.id}
-              ref={(el) => (cardsRef.current[index] = el as HTMLDivElement)}
+              ref={(el) => {
+                cardsRef.current[index] = el as HTMLDivElement;
+              }}
               className='group relative overflow-hidden bg-card/60 backdrop-blur-sm border-border/50 shadow-2xl hover:shadow-3xl transition-all duration-700 hover:-translate-y-3 hover:rotate-1'
             >
               {/* Gradient Background */}
