@@ -3,6 +3,8 @@
 import { useLenis } from '@/components/smooth-scroll-provider';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { AnimatedSubtitle } from '@/hooks/animated-subtitle';
+import { AutoTypingText } from '@/hooks/auto-typing-text';
 import {
   ArrowDown,
   ArrowUpRight,
@@ -13,9 +15,10 @@ import {
   Mail,
   Phone,
   Play,
+  Sparkles,
+  Zap,
 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import { AutoTypingText } from '../hooks/auto-typing-text';
 
 export function HeroSection() {
   const lenis = useLenis();
@@ -26,6 +29,7 @@ export function HeroSection() {
   const socialRef = useRef<HTMLDivElement>(null);
 
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -38,46 +42,11 @@ export function HeroSection() {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
-  // useEffect(() => {
-  //   const tl = gsap.timeline({ delay: 0.8 });
-  //   tl.fromTo(
-  //     titleRef.current,
-  //     { opacity: 0, y: 120, scale: 0.8, rotateX: 15 },
-  //     {
-  //       opacity: 1,
-  //       y: 0,
-  //       scale: 1,
-  //       rotateX: 0,
-  //       duration: 1.4,
-  //       ease: 'power4.out',
-  //     }
-  //   );
-  //   tl.fromTo(
-  //     subtitleRef.current,
-  //     { opacity: 0, y: 60, filter: 'blur(10px)' },
-  //     {
-  //       opacity: 1,
-  //       y: 0,
-  //       filter: 'blur(0px)',
-  //       duration: 1.2,
-  //       ease: 'power3.out',
-  //     },
-  //     '-=1'
-  //   );
-  //   tl.fromTo(
-  //     ctaRef.current,
-  //     { opacity: 0, y: 40, scale: 0.8 },
-  //     { opacity: 1, y: 0, scale: 1, duration: 1, ease: 'back.out(1.4)' },
-  //     '-=0.8'
-  //   );
-  //   tl.fromTo(
-  //     [socialRef.current, statsRef.current],
-  //     { opacity: 0, y: 30 },
-  //     { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out', stagger: 0.2 },
-  //     '-=0.6'
-  //   );
-  //   return () => tl.kill();
-  // }, []);
+  useEffect(() => {
+    // Trigger animations after component mounts
+    const timer = setTimeout(() => setIsVisible(true), 500);
+    return () => clearTimeout(timer);
+  }, []);
 
   const scrollToSection = (id: string) => {
     if (lenis) {
@@ -89,81 +58,123 @@ export function HeroSection() {
     <section
       id='hero'
       ref={heroRef}
-      className='relative lg:p-3 min-h-[80vh] w-full flex items-center justify-center overflow-hidden'
+      className='relative lg:p-3 min-h-[85vh] w-full flex items-center justify-center overflow-hidden bg-gradient-to-br from-background via-background to-background/95'
     >
-      {/* Dynamic Gradient Overlays - Keep the mouse-reactive one */}
+      {/* Enhanced Background Effects */}
+      <div className='absolute inset-0 bg-grid-white/[0.02] bg-grid-16' />
+
+      {/* Dynamic Gradient Overlays */}
       <div
-        className='absolute inset-0 opacity-20 transition-all duration-1000 ease-out z-10'
+        className='absolute inset-0 opacity-30 transition-all duration-1000 ease-out z-10'
         style={{
-          background: `radial-gradient(800px circle at ${
-            50 + mousePosition.x * 15
+          background: `radial-gradient(1000px circle at ${
+            50 + mousePosition.x * 20
           }% ${
-            50 + mousePosition.y * 15
-          }%, rgba(99, 102, 241, 0.15), transparent 60%)`,
+            50 + mousePosition.y * 20
+          }%, rgba(99, 102, 241, 0.1), rgba(59, 130, 246, 0.05) 40%, transparent 70%)`,
         }}
       />
+
+      {/* Floating Elements */}
+      <div className='absolute inset-0 z-10'>
+        <Sparkles
+          className='absolute top-20 left-20 h-6 w-6 text-primary/30 animate-pulse'
+          style={{ animationDelay: '0s' }}
+        />
+        <Zap
+          className='absolute top-40 right-32 h-8 w-8 text-blue-500/20 animate-bounce'
+          style={{ animationDelay: '1s' }}
+        />
+        <Sparkles
+          className='absolute bottom-32 left-32 h-4 w-4 text-orange-500/40 animate-pulse'
+          style={{ animationDelay: '2s' }}
+        />
+      </div>
 
       {/* Main Content */}
       <div className='relative z-20 w-full max-w-7xl mx-auto px-6 lg:px-8 py-20'>
         <div className='grid lg:grid-cols-12 gap-12 items-center'>
           {/* Left Column - Main Content */}
           <div className='lg:col-span-8 space-y-8'>
-            {/* Status Badge */}
-            <div className='inline-flex items-center gap-3 px-4 py-2 rounded-full bg-green-500/10 backdrop-blur-sm border border-green-500/20 text-green-400 text-sm font-medium'>
-              <div className='w-2 h-2 bg-green-400 rounded-full animate-pulse' />
+            {/* Enhanced Status Badge */}
+            <div
+              className={`inline-flex items-center gap-3 px-5 py-3 rounded-full bg-gradient-to-r from-green-500/10 via-emerald-500/10 to-green-500/10 backdrop-blur-sm border border-green-500/30 text-green-400 text-sm font-medium shadow-lg transition-all duration-700 ${
+                isVisible
+                  ? 'opacity-100 translate-y-0'
+                  : 'opacity-0 translate-y-4'
+              }`}
+            >
+              <div className='relative'>
+                <div className='w-3 h-3 bg-green-400 rounded-full animate-pulse' />
+                <div className='absolute inset-0 w-3 h-3 bg-green-400 rounded-full animate-ping opacity-75' />
+              </div>
               Available for new opportunities
               <Calendar className='h-4 w-4' />
             </div>
 
-            {/* Main Title */}
-            <div ref={titleRef} className='space-y-4'>
+            {/* Enhanced Main Title */}
+            <div
+              ref={titleRef}
+              className={`space-y-6 transition-all duration-1000 delay-300 ${
+                isVisible
+                  ? 'opacity-100 translate-y-0'
+                  : 'opacity-0 translate-y-8'
+              }`}
+            >
               <h1 className='text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black leading-none tracking-tight'>
-                <span className='block bg-gradient-to-r from-foreground via-foreground to-muted-foreground bg-clip-text text-transparent'>
+                <span className='block bg-gradient-to-r from-foreground via-foreground to-muted-foreground bg-clip-text text-transparent hover:from-primary hover:via-blue-500 hover:to-orange-500 transition-all duration-500'>
                   Hi, I&apos;m
                 </span>
-                <span className='block bg-gradient-to-r from-primary via-blue-500 to-orange-500 bg-clip-text text-transparent'>
+                <span className='block bg-gradient-to-r from-primary via-blue-500 to-orange-500 bg-clip-text text-transparent hover:scale-105 transition-transform duration-300 cursor-default'>
                   Samuel Oluwasegun
                 </span>
               </h1>
               <div className='flex flex-wrap items-center gap-4 text-2xl sm:text-3xl lg:text-4xl font-light text-muted-foreground'>
                 <Badge
                   variant='outline'
-                  className='text-lg px-4 py-2 bg-gradient-to-r from-primary via-blue-500 to-orange-500 bg-clip-text text-transparent border-primary/20  font-semibold min-w-[280px] justify-center' // Adjusted min-w for full phrase
+                  className='text-lg px-6 py-3 bg-gradient-to-r from-primary via-blue-500 to-orange-500 bg-clip-text text-transparent border-primary/30 font-semibold min-w-[300px] justify-center shadow-lg hover:shadow-primary/20 transition-all duration-300 hover:scale-105'
                 >
                   <AutoTypingText
                     roles={[
                       'Full Stack Architect',
                       'Full Stack Developer',
                       'Full Stack Engineer',
+                      'UI/UX Designer',
+                      'Tech Innovator',
                     ]}
                   />
                 </Badge>
               </div>
             </div>
 
-            {/* Subtitle */}
-            <p
+            {/* Enhanced Animated Subtitle */}
+            <div
               ref={subtitleRef}
-              className='text-lg sm:text-xl lg:text-2xl max-w-3xl leading-relaxed text-muted-foreground'
+              className={`transition-all duration-1000 delay-500 ${
+                isVisible
+                  ? 'opacity-100 translate-y-0'
+                  : 'opacity-0 translate-y-6'
+              }`}
             >
-              I craft{' '}
-              <span className='text-primary font-semibold bg-primary/10 px-2 py-1 rounded-lg'>
-                next-generation
-              </span>{' '}
-              digital experiences that blend cutting-edge technology with
-              intuitive design, delivering solutions that don&apos;t just
-              work—they{' '}
-              <span className='text-blue-500 font-semibold bg-blue-500/10 px-2 py-1 rounded-lg'>
-                inspire
-              </span>
-              .
-            </p>
+              <AnimatedSubtitle
+                text="I craft <span class='text-primary font-semibold bg-primary/10 px-2 py-1 rounded-lg'>next-generation</span> digital experiences that blend cutting-edge technology with intuitive design, delivering solutions that don't just work—they <span class='text-blue-500 font-semibold bg-blue-500/10 px-2 py-1 rounded-lg'>inspire</span> and <span class='text-orange-500 font-semibold bg-orange-500/10 px-2 py-1 rounded-lg'>transform</span>."
+                className='text-lg sm:text-xl lg:text-2xl max-w-4xl leading-relaxed text-muted-foreground'
+                delay={2000}
+              />
+            </div>
 
-            {/* CTA Buttons */}
-            <div ref={ctaRef} className='flex flex-col sm:flex-row gap-4'>
+            {/* Enhanced CTA Buttons */}
+            <div
+              ref={ctaRef}
+              className={`flex flex-col sm:flex-row gap-4 transition-all duration-1000 delay-700 ${
+                isVisible
+                  ? 'opacity-100 translate-y-0'
+                  : 'opacity-0 translate-y-4'
+              }`}
+            >
               <Button
                 size='lg'
-                className='group relative bg-gradient-to-r from-primary via-blue-600 to-orange-600 hover:from-primary/90 hover:via-blue-600/90 hover:to-orange-600/90 text-white shadow-2xl text-lg px-8 py-6 rounded-2xl transition-all duration-500 hover:scale-105 hover:shadow-primary/25 border-0 overflow-hidden'
+                className='group relative bg-gradient-to-r from-primary via-blue-600 to-orange-600 hover:from-primary/90 hover:via-blue-600/90 hover:to-orange-600/90 text-white shadow-2xl text-lg px-10 py-7 rounded-2xl transition-all duration-500 hover:scale-105 hover:shadow-primary/30 border-0 overflow-hidden'
                 onClick={() => scrollToSection('projects')}
               >
                 <span className='relative z-10 flex items-center gap-3'>
@@ -172,11 +183,12 @@ export function HeroSection() {
                   <ArrowDown className='h-5 w-5 group-hover:translate-y-1 transition-transform duration-300' />
                 </span>
                 <div className='absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300' />
+                <div className='absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000' />
               </Button>
               <Button
                 size='lg'
                 variant='outline'
-                className='group bg-background/20 backdrop-blur-sm border-border/30 hover:bg-background/40 shadow-xl text-lg px-8 py-6 rounded-2xl transition-all duration-500 hover:scale-105'
+                className='group bg-background/30 backdrop-blur-sm border-border/40 hover:bg-background/50 shadow-xl text-lg px-10 py-7 rounded-2xl transition-all duration-500 hover:scale-105 hover:shadow-lg'
                 onClick={() => scrollToSection('contact')}
               >
                 <span className='flex items-center gap-3'>
@@ -186,71 +198,95 @@ export function HeroSection() {
               </Button>
             </div>
           </div>
-          {/* Right Column - Stats & Social */}
+
+          {/* Enhanced Right Column - Stats & Social */}
           <div className='lg:col-span-4 space-y-8'>
-            {/* Social Links */}
-            <div ref={socialRef} className='space-y-4'>
-              <h3 className='text-sm font-semibold text-muted-foreground uppercase tracking-wider'>
+            {/* Enhanced Social Links */}
+            <div
+              ref={socialRef}
+              className={`space-y-6 transition-all duration-1000 delay-900 ${
+                isVisible
+                  ? 'opacity-100 translate-x-0'
+                  : 'opacity-0 translate-x-8'
+              }`}
+            >
+              <h3 className='text-sm font-semibold text-muted-foreground uppercase tracking-wider flex items-center gap-2'>
+                <Sparkles className='h-4 w-4' />
                 Connect With Me
               </h3>
-              <div className='flex flex-col space-y-3'>
+              <div className='flex flex-col space-y-4'>
                 {[
                   {
                     icon: Github,
                     href: 'https://github.com/oluwaseg',
                     label: 'GitHub',
                     username: 'oluwaseg',
-                    color: 'hover:text-gray-400',
+                    color: 'hover:text-gray-400 hover:border-gray-400/30',
+                    bg: 'hover:bg-gray-400/5',
                   },
                   {
                     icon: Linkedin,
                     href: 'https://www.linkedin.com/in/samuel-oluwasegun-39ab37253',
                     label: 'LinkedIn',
-                    username: '/in/samuel-oluwasegun-39ab37253',
-                    color: 'hover:text-blue-400',
+                    username: '/in/samuel-oluwasegun',
+                    color: 'hover:text-blue-400 hover:border-blue-400/30',
+                    bg: 'hover:bg-blue-400/5',
                   },
                   {
                     icon: Mail,
                     href: 'mailto:oluwasegunsam56@gmail.com',
                     label: 'Email',
                     username: 'oluwasegunsam56@gmail.com',
-                    color: 'hover:text-blue-400',
+                    color: 'hover:text-primary hover:border-primary/30',
+                    bg: 'hover:bg-primary/5',
                   },
                   {
                     icon: Phone,
                     href: 'tel:+2349048095407',
                     label: 'Phone',
-                    username: '+2349048095407',
-                    color: 'hover:text-orange-400',
+                    username: '+234 904 809 5407',
+                    color: 'hover:text-orange-400 hover:border-orange-400/30',
+                    bg: 'hover:bg-orange-400/5',
                   },
-                ].map(({ icon: Icon, href, label, username, color }) => (
-                  <a
-                    key={label}
-                    href={href}
-                    className={`group flex items-center gap-4 p-4 rounded-2xl bg-background/10 backdrop-blur-sm border border-border/20 text-muted-foreground ${color} hover:bg-background/20 transition-all duration-300 hover:scale-105`}
-                    aria-label={label}
-                  >
-                    <Icon className='h-6 w-6 group-hover:scale-110 transition-transform duration-300' />
-                    <div>
-                      <div className='font-medium'>{label}</div>
-                      <div className='text-sm opacity-70'>{username}</div>
-                    </div>
-                    <ArrowUpRight className='h-4 w-4 ml-auto opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300' />
-                  </a>
-                ))}
+                ].map(
+                  ({ icon: Icon, href, label, username, color, bg }, index) => (
+                    <a
+                      key={label}
+                      href={href}
+                      className={`group flex items-center gap-4 p-5 rounded-2xl bg-background/20 backdrop-blur-sm border border-border/30 text-muted-foreground ${color} ${bg} transition-all duration-300 hover:scale-105 hover:shadow-lg`}
+                      style={{ animationDelay: `${index * 100}ms` }}
+                      aria-label={label}
+                    >
+                      <div className='relative'>
+                        <Icon className='h-6 w-6 group-hover:scale-110 transition-transform duration-300' />
+                        <div className='absolute inset-0 h-6 w-6 opacity-0 group-hover:opacity-20 group-hover:scale-150 transition-all duration-300 rounded-full bg-current' />
+                      </div>
+                      <div className='flex-1'>
+                        <div className='font-medium'>{label}</div>
+                        <div className='text-sm opacity-70 group-hover:opacity-100 transition-opacity duration-300'>
+                          {username}
+                        </div>
+                      </div>
+                      <ArrowUpRight className='h-4 w-4 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300' />
+                    </a>
+                  )
+                )}
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Scroll Indicator */}
+      {/* Enhanced Scroll Indicator */}
       <div className='absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20'>
-        <div className='flex flex-col items-center space-y-3 animate-bounce'>
-          <div className='w-6 h-10 border-2 border-muted-foreground/30 rounded-full flex justify-center'>
-            <div className='w-1 h-3 bg-primary rounded-full mt-2 animate-pulse' />
+        <div
+          className='flex flex-col items-center space-y-3 animate-bounce cursor-pointer group'
+          onClick={() => scrollToSection('about')}
+        >
+          <div className='w-6 h-10 border-2 border-muted-foreground/40 rounded-full flex justify-center group-hover:border-primary/60 transition-colors duration-300'>
+            <div className='w-1 h-3 bg-primary rounded-full mt-2 animate-pulse group-hover:bg-blue-500 transition-colors duration-300' />
           </div>
-          <span className='text-xs text-muted-foreground font-medium tracking-wider uppercase'>
+          <span className='text-xs text-muted-foreground font-medium tracking-wider uppercase group-hover:text-primary transition-colors duration-300'>
             Scroll to explore
           </span>
         </div>

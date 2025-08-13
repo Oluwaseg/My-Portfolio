@@ -1,24 +1,21 @@
 'use client';
 
 import { Badge } from '@/components/ui/badge';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import {
   Code,
   Database,
   GitBranch,
   Lightbulb,
   Server,
+  Sparkles,
   TestTube,
+  Zap,
 } from 'lucide-react';
-import { useEffect, useRef } from 'react';
-
-gsap.registerPlugin(ScrollTrigger);
+import { useLayoutEffect, useRef, useState } from 'react';
 
 const expertiseAreas = [
   {
     title: 'Frontend Development',
-    level: 'Advanced',
     description:
       'React component architecture, Angular SPAs, Next.js SSR/ISR, Tailwind CSS, responsive/accessibility best practices',
     technologies: [
@@ -36,7 +33,6 @@ const expertiseAreas = [
   },
   {
     title: 'Backend & APIs',
-    level: 'Advanced',
     description:
       'Node.js with Express & NestJS, REST and GraphQL endpoints, JWT/OAuth2 auth, validation & security',
     technologies: [
@@ -49,11 +45,10 @@ const expertiseAreas = [
       'OAuth2',
     ],
     icon: Server,
-    color: 'from-blue-500 to-emerald-500',
+    color: 'from-emerald-500 to-teal-500',
   },
   {
     title: 'Data Management',
-    level: 'Proficient',
     description:
       'MySQL/PostgreSQL schema design and optimization, MongoDB modeling, Redis caching strategies',
     technologies: ['MySQL', 'PostgreSQL', 'MongoDB', 'Redis'],
@@ -62,7 +57,6 @@ const expertiseAreas = [
   },
   {
     title: 'Testing & Quality',
-    level: 'Proficient',
     description:
       'Unit/integration tests (Jest, Supertest), end-to-end workflows (Cypress, Postman), TDD habits',
     technologies: ['Jest', 'Supertest', 'Cypress', 'Postman', 'TDD'],
@@ -71,7 +65,6 @@ const expertiseAreas = [
   },
   {
     title: 'CI/CD & DevOps',
-    level: 'Familiar',
     description:
       'Docker containerization, GitHub Actions pipelines, automated builds/tests/deployments, basic monitoring',
     technologies: ['Docker', 'GitHub Actions', 'CI/CD', 'DevOps'],
@@ -80,103 +73,166 @@ const expertiseAreas = [
   },
 ];
 
+const stats = [
+  { label: 'Years Experience', value: 4, suffix: '+' },
+  { label: 'Projects Completed', value: 50, suffix: '+' },
+  { label: 'Performance Improvement', value: 30, suffix: '%' },
+  { label: 'User Satisfaction', value: 20, suffix: '%' },
+];
+
 export function AboutSection() {
-  const sectionRef = useRef(null);
-  const titleRef = useRef(null);
-  const profileSummaryRef = useRef(null);
-  const expertiseTitleRef = useRef(null);
-  const expertiseItemsRef = useRef<HTMLDivElement[]>([]);
+  const [isGSAPLoaded, setIsGSAPLoaded] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+  const titleRef = useRef<HTMLDivElement>(null);
+  const statsRef = useRef<HTMLDivElement>(null);
+  const cardsRef = useRef<HTMLDivElement[]>([]);
 
-  useEffect(() => {
-    // Ensure all refs are available before creating animations
-    if (
-      !sectionRef.current ||
-      !titleRef.current ||
-      !profileSummaryRef.current ||
-      !expertiseTitleRef.current
-    ) {
-      return;
-    }
+  useLayoutEffect(() => {
+    if (typeof window === 'undefined') return;
 
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: 'top 75%',
-        end: 'bottom top',
-        toggleActions: 'play none none reverse',
-      },
-    });
+    const loadGSAP = async () => {
+      try {
+        const { gsap } = await import('gsap');
+        const { ScrollTrigger } = await import('gsap/ScrollTrigger');
 
-    tl.fromTo(
-      titleRef.current,
-      { opacity: 0, y: 100 },
-      { opacity: 1, y: 0, duration: 1, ease: 'power3.out' }
-    );
-    tl.fromTo(
-      profileSummaryRef.current,
-      { opacity: 0, y: 80 },
-      { opacity: 1, y: 0, duration: 1, ease: 'power3.out' },
-      '-=0.7'
-    );
-    tl.fromTo(
-      expertiseTitleRef.current,
-      { opacity: 0, y: 60 },
-      { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' },
-      '-=0.5'
-    );
+        gsap.registerPlugin(ScrollTrigger);
 
-    // Only animate expertise items if they exist
-    if (expertiseItemsRef.current.length > 0) {
-      tl.fromTo(
-        expertiseItemsRef.current,
-        { opacity: 0, y: 40, scale: 0.95 },
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 0.7,
-          ease: 'power3.out',
-          stagger: 0.15,
-        },
-        '-=0.3'
-      );
-    }
+        // Animate title entrance
+        if (titleRef.current) {
+          gsap.fromTo(
+            titleRef.current.children,
+            { y: 100, opacity: 0 },
+            {
+              y: 0,
+              opacity: 1,
+              duration: 1.2,
+              stagger: 0.2,
+              ease: 'back.out(1.7)',
+              scrollTrigger: {
+                trigger: titleRef.current,
+                start: 'top 80%',
+                toggleActions: 'play none none reverse',
+              },
+            }
+          );
+        }
+
+        // Animate stats
+        if (statsRef.current) {
+          gsap.fromTo(
+            statsRef.current.children,
+            { scale: 0, opacity: 0 },
+            {
+              scale: 1,
+              opacity: 1,
+              duration: 0.8,
+              stagger: 0.1,
+              ease: 'back.out(1.7)',
+              scrollTrigger: {
+                trigger: statsRef.current,
+                start: 'top 80%',
+                toggleActions: 'play none none reverse',
+              },
+            }
+          );
+        }
+
+        // Animate expertise cards
+        cardsRef.current.forEach((card, index) => {
+          if (card) {
+            gsap.fromTo(
+              card,
+              { x: index % 2 === 0 ? -100 : 100, opacity: 0, rotateY: 15 },
+              {
+                x: 0,
+                opacity: 1,
+                rotateY: 0,
+                duration: 1,
+                delay: index * 0.1,
+                ease: 'power3.out',
+                scrollTrigger: {
+                  trigger: card,
+                  start: 'top 85%',
+                  toggleActions: 'play none none reverse',
+                },
+              }
+            );
+          }
+        });
+
+        setIsGSAPLoaded(true);
+      } catch (error) {
+        console.warn(
+          'GSAP failed to load, falling back to CSS animations',
+          error
+        );
+        setIsGSAPLoaded(true);
+      }
+    };
+
+    loadGSAP();
 
     return () => {
-      tl.kill();
+      // Cleanup ScrollTrigger instances
+      if (typeof window !== 'undefined') {
+        import('gsap/ScrollTrigger').then(({ ScrollTrigger }) => {
+          ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+        });
+      }
     };
   }, []);
 
   return (
     <section
-      id='about'
       ref={sectionRef}
+      id='about'
       className='min-h-screen w-full flex flex-col items-center justify-center bg-gradient-to-br from-background via-background to-muted/30 py-20 px-4 md:px-8 relative overflow-hidden'
     >
-      {/* Subtle Background Grid */}
+      {/* Enhanced Background Elements */}
       <div className='absolute inset-0 bg-grid-white/[0.02] bg-[size:50px_50px]' />
+      <div className='absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-blue-500/5' />
+
+      {/* Floating Elements */}
+      <div className='absolute top-20 left-10 text-primary/20 animate-bounce'>
+        <Sparkles className='h-6 w-6' />
+      </div>
+      <div className='absolute top-40 right-20 text-blue-500/20 animate-pulse'>
+        <Zap className='h-8 w-8' />
+      </div>
+      <div className='absolute bottom-40 left-20 text-purple-500/20 animate-bounce'>
+        <Code className='h-7 w-7' />
+      </div>
 
       <div className='container mx-auto max-w-7xl text-center relative z-10'>
         {/* Section Title */}
         <div ref={titleRef} className='mb-16'>
-          <div className='inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 backdrop-blur-sm border border-primary/20 text-primary text-sm font-medium mb-6'>
+          <div
+            className={`inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 backdrop-blur-sm border border-primary/20 text-primary text-sm font-medium mb-6 hover:bg-primary/15 transition-colors duration-300 ${
+              !isGSAPLoaded ? 'animate-fade-in' : ''
+            }`}
+          >
             <Lightbulb className='h-4 w-4' />
             Who I Am
           </div>
-          <h2 className='text-5xl md:text-7xl font-black mb-6 bg-gradient-to-r from-foreground via-primary to-blue-600 bg-clip-text text-transparent'>
+          <h2
+            className={`text-5xl md:text-7xl font-black mb-6 bg-gradient-to-r from-foreground via-primary to-blue-600 bg-clip-text text-transparent ${
+              !isGSAPLoaded ? 'animate-slide-up' : ''
+            }`}
+          >
             About Me
           </h2>
-          <div className='w-24 h-1 bg-gradient-to-r from-primary to-blue-500 mx-auto rounded-full' />
+          <div
+            className={`w-24 h-1 bg-gradient-to-r from-primary to-blue-500 mx-auto rounded-full shadow-lg shadow-primary/25 ${
+              !isGSAPLoaded ? 'animate-scale-in' : ''
+            }`}
+          />
         </div>
 
         {/* Profile Summary */}
-        <div
-          ref={profileSummaryRef}
-          className='mb-20 max-w-4xl mx-auto text-muted-foreground space-y-6'
-        >
+        <div className='mb-16 max-w-4xl mx-auto text-muted-foreground space-y-6'>
           <p className='text-xl md:text-2xl leading-relaxed'>
             I&apos;m a
-            <span className='ml-1 text-primary font-semibold'>
+            <span className='ml-1 text-primary font-semibold bg-primary/10 px-2 py-1 rounded-md'>
               full-stack software engineer
             </span>
             with 4+ years of experience building user-centric web applications
@@ -188,13 +244,41 @@ export function AboutSection() {
           </p>
         </div>
 
+        {/* Stats Section */}
+        <div className='mb-20'>
+          <div
+            ref={statsRef}
+            className='grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto'
+          >
+            {stats.map((stat, index) => (
+              <div
+                key={stat.label}
+                className={`text-center group ${
+                  !isGSAPLoaded ? 'animate-bounce-in' : ''
+                }`}
+                style={{
+                  animationDelay: !isGSAPLoaded ? `${index * 100}ms` : '0ms',
+                }}
+              >
+                <div className='text-4xl md:text-5xl font-black bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent mb-2 group-hover:scale-110 transition-transform duration-300'>
+                  {stat.value}
+                  {stat.suffix}
+                </div>
+                <div className='text-sm md:text-base text-muted-foreground font-medium'>
+                  {stat.label}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
         {/* Areas of Expertise */}
-        <div ref={expertiseTitleRef} className='mb-12'>
+        <div className='mb-12'>
           <h3 className='text-4xl md:text-5xl font-black mb-4 bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent'>
             Areas of Expertise
           </h3>
           <p className='text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto'>
-            My proficiency across the stack ensures robust, scalable, and
+            My experience across the stack ensures robust, scalable, and
             user-friendly digital solutions.
           </p>
         </div>
@@ -206,36 +290,47 @@ export function AboutSection() {
               <div
                 key={area.title}
                 ref={(el) => {
-                  expertiseItemsRef.current[index] = el as HTMLDivElement;
+                  if (el) cardsRef.current[index] = el;
                 }}
-                className='relative p-6 rounded-2xl bg-card/60 backdrop-blur-sm border border-border/50 shadow-lg transition-all duration-500 hover:shadow-xl hover:-translate-y-1'
+                className={`group relative p-6 rounded-2xl bg-card/60 backdrop-blur-sm border border-border/50 shadow-lg transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 hover:bg-card/80 cursor-pointer ${
+                  !isGSAPLoaded ? 'animate-slide-in-left' : ''
+                }`}
+                style={{
+                  animationDelay: !isGSAPLoaded ? `${index * 150}ms` : '0ms',
+                }}
               >
+                {/* Hover Glow Effect */}
+                <div
+                  className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${area.color} opacity-0 group-hover:opacity-10 transition-opacity duration-500`}
+                />
+
                 <div className='flex items-center gap-4 mb-4'>
-                  {/* Icon */}
+                  {/* Enhanced Icon */}
                   <div
-                    className={`w-12 h-12 flex items-center justify-center rounded-full bg-gradient-to-br ${area.color} text-white shadow-md`}
+                    className={`w-12 h-12 flex items-center justify-center rounded-full bg-gradient-to-br ${area.color} text-white shadow-md group-hover:shadow-lg group-hover:scale-110 transition-all duration-300`}
                   >
                     <IconComponent className='h-6 w-6' />
                   </div>
-                  {/* Title and Level */}
-                  <h4 className='text-2xl font-bold bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent'>
-                    {area.title}
-                    <span className='text-lg font-normal text-muted-foreground/80 ml-2'>
-                      {area.level}
-                    </span>
-                  </h4>
+                  {/* Title */}
+                  <div className='flex-1'>
+                    <h4 className='text-2xl font-bold bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent group-hover:from-primary group-hover:to-blue-600 transition-all duration-300'>
+                      {area.title}
+                    </h4>
+                  </div>
                 </div>
+
                 {/* Description */}
-                <p className='text-muted-foreground text-base mb-4 leading-relaxed'>
+                <p className='text-muted-foreground text-base mb-4 leading-relaxed group-hover:text-muted-foreground/90 transition-colors duration-300'>
                   {area.description}
                 </p>
+
                 {/* Technologies */}
                 <div className='flex flex-wrap gap-2'>
                   {area.technologies.map((tech) => (
                     <Badge
                       key={tech}
                       variant='secondary'
-                      className='text-sm px-3 py-1 bg-secondary/80 hover:bg-secondary transition-colors duration-300 cursor-default'
+                      className='text-sm px-3 py-1 bg-secondary/80 hover:bg-secondary transition-all duration-300 cursor-default group-hover:bg-primary/10 group-hover:text-primary group-hover:border-primary/20'
                     >
                       {tech}
                     </Badge>

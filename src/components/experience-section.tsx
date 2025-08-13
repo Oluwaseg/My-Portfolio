@@ -9,12 +9,15 @@ import {
   Award,
   Calendar,
   Check,
+  Code,
   ExternalLink,
   MapPin,
+  Sparkles,
+  Star,
   TrendingUp,
   Users,
   Zap,
-} from 'lucide-react'; // Added Check icon
+} from 'lucide-react';
 import { useRef } from 'react';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -25,7 +28,7 @@ const experiences = [
     company: 'Finchat',
     position: 'Backend Engineer',
     duration: 'Jan 2021 – Aug 2022',
-    location: 'Remote', // Inferred
+    location: 'Remote',
     type: 'Full-time',
     description:
       'Spearheaded a React-based dashboard overhaul, cutting initial page load from 4s to 2.8s and lifting NPS by 20%. Implemented Redis caching and optimized database queries to slash average API response times by 35%. Built Jest and Supertest suites covering 80% of core payment endpoints, reducing post-release bugs by 40%. Integrated WebSockets for real-time balance updates, improving active session duration by 15%.',
@@ -72,7 +75,7 @@ const experiences = [
     company: 'Noma Gaming',
     position: 'Full-Stack Developer',
     duration: 'Jun 2019 – Dec 2020',
-    location: 'Remote', // Inferred
+    location: 'Remote',
     type: 'Full-time',
     description:
       'Developed Angular modules for live game lobbies, boosting daily active players by 15%. Enhanced React admin portal, reducing asset load size by 40% and improving deployment frequency. Designed Node.js matchmaking service supporting 2,000+ concurrent sessions with <1% error rate. Automated Docker builds and GitHub Actions workflows, achieving zero-downtime releases for weekly feature updates.',
@@ -113,7 +116,7 @@ const experiences = [
     company: 'Freelance',
     position: 'Contract Developer',
     duration: 'Jan 2021 – Present',
-    location: 'Remote', // Inferred
+    location: 'Remote',
     type: 'Contract',
     description:
       'Delivered full-stack solutions for e-commerce, fintech, and SaaS clients, building React frontends and Node.js/Express backends. Designed and optimized SQL and NoSQL schemas; improved query performance by up to 25%. Set up CI/CD with GitHub Actions and Docker, cutting manual deployment steps in half. Worked directly with stakeholders for UI/UX feedback and user acceptance testing, ensuring polished deliverables.',
@@ -155,7 +158,7 @@ const experiences = [
     company: 'HNG Virtual Program',
     position: 'Full-Stack Web Developer',
     duration: 'Jul 2024',
-    location: 'Remote', // Inferred
+    location: 'Remote',
     type: 'Program',
     description:
       'Built a Next.js demo app with code splitting and caching that achieved a 95% Lighthouse performance score. Authored unit/integration tests to maintain 90%+ coverage under tight deadlines. Configured GitHub Actions for live previews and automated deployments, reducing feedback loops by 60%.',
@@ -182,165 +185,309 @@ const experiences = [
 ];
 
 export function ExperienceSection() {
-  const sectionRef = useRef(null);
-  const titleRef = useRef(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  const titleRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement[]>([]);
+  const floatingElementsRef = useRef<HTMLDivElement[]>([]);
+
+  // useEffect(() => {
+  //   const ctx = gsap.context(() => {
+  //     gsap.fromTo(
+  //       titleRef.current,
+  //       { opacity: 0, y: 50 },
+  //       {
+  //         opacity: 1,
+  //         y: 0,
+  //         duration: 1,
+  //         ease: "power3.out",
+  //         scrollTrigger: {
+  //           trigger: titleRef.current,
+  //           start: "top 80%",
+  //         },
+  //       },
+  //     )
+
+  //     cardsRef.current.forEach((card, index) => {
+  //       if (card) {
+  //         gsap.fromTo(
+  //           card,
+  //           { opacity: 0, y: 100, rotateX: 15 },
+  //           {
+  //             opacity: 1,
+  //             y: 0,
+  //             rotateX: 0,
+  //             duration: 1.2,
+  //             delay: index * 0.2,
+  //             ease: "power3.out",
+  //             scrollTrigger: {
+  //               trigger: card,
+  //               start: "top 85%",
+  //             },
+  //           },
+  //         )
+  //       }
+  //     })
+
+  //     floatingElementsRef.current.forEach((element, index) => {
+  //       if (element) {
+  //         gsap.to(element, {
+  //           y: -20,
+  //           rotation: 360,
+  //           duration: 4 + index,
+  //           repeat: -1,
+  //           yoyo: true,
+  //           ease: "power2.inOut",
+  //           delay: index * 0.5,
+  //         })
+  //       }
+  //     })
+  //   }, sectionRef)
+
+  //   return () => ctx.revert()
+  // }, [])
 
   return (
-    <section
-      id='experience'
-      ref={sectionRef}
-      className='min-h-screen w-full bg-gradient-to-br from-background via-muted/5 to-background py-20 px-4 md:px-8 relative overflow-hidden'
-    >
-      {/* Background Elements */}
-      <div className='absolute inset-0 bg-grid-white/[0.02] bg-[size:60px_60px]' />
-      <div className='absolute top-1/4 right-1/4 w-96 h-96 bg-primary/3 rounded-full blur-3xl' />
-      <div className='absolute bottom-1/4 left-1/4 w-72 h-72 bg-blue-500/3 rounded-full blur-3xl' />
+    <>
+      <style jsx>{`
+        @keyframes float {
+          0%,
+          100% {
+            transform: translateY(0px) rotate(0deg);
+          }
+          50% {
+            transform: translateY(-20px) rotate(180deg);
+          }
+        }
+        @keyframes floatSlow {
+          0%,
+          100% {
+            transform: translateY(0px) rotate(0deg);
+          }
+          50% {
+            transform: translateY(-15px) rotate(-180deg);
+          }
+        }
+        @keyframes floatFast {
+          0%,
+          100% {
+            transform: translateY(0px) rotate(0deg);
+          }
+          50% {
+            transform: translateY(-25px) rotate(360deg);
+          }
+        }
+        @keyframes sideFloat {
+          0%,
+          100% {
+            transform: translateX(0px) rotate(0deg);
+          }
+          50% {
+            transform: translateX(10px) rotate(180deg);
+          }
+        }
+        .float-1 {
+          animation: float 4s ease-in-out infinite;
+        }
+        .float-2 {
+          animation: floatSlow 5s ease-in-out infinite 0.5s;
+        }
+        .float-3 {
+          animation: floatFast 3s ease-in-out infinite 1s;
+        }
+        .float-4 {
+          animation: sideFloat 6s ease-in-out infinite 1.5s;
+        }
+      `}</style>
 
-      <div className='container mx-auto max-w-7xl relative z-10'>
-        <div ref={titleRef} className='text-center mb-20'>
-          <div className='inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 backdrop-blur-sm border border-primary/20 text-primary text-sm font-medium mb-6'>
-            <Calendar className='h-4 w-4' />
-            Professional Journey
-          </div>
-          <h2 className='text-5xl md:text-7xl font-black mb-6 bg-gradient-to-r from-foreground via-primary to-blue-600 bg-clip-text text-transparent'>
-            Experience
-          </h2>
-          <div className='w-24 h-1 bg-gradient-to-r from-primary to-blue-500 mx-auto rounded-full mb-6' />
-          <p className='text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed'>
-            A journey through innovative companies, impactful projects, and
-            continuous growth in the ever-evolving world of technology
-          </p>
+      <section
+        id='experience'
+        ref={sectionRef}
+        className='min-h-screen w-full bg-gradient-to-br from-background via-muted/5 to-background py-20 px-4 md:px-8 relative overflow-hidden'
+      >
+        <div className='absolute inset-0 bg-grid-white/[0.02] bg-[size:60px_60px]' />
+        <div className='absolute top-1/4 right-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-pulse' />
+        <div className='absolute bottom-1/4 left-1/4 w-72 h-72 bg-blue-500/5 rounded-full blur-3xl animate-pulse' />
+        <div className='absolute top-1/2 left-1/2 w-64 h-64 bg-purple-500/3 rounded-full blur-3xl animate-pulse' />
+
+        <div
+          ref={(el) => {
+            if (el) floatingElementsRef.current[0] = el;
+          }}
+          className='absolute top-20 left-10 text-primary/20 float-1'
+        >
+          <Sparkles className='h-6 w-6' />
+        </div>
+        <div
+          ref={(el) => {
+            if (el) floatingElementsRef.current[1] = el;
+          }}
+          className='absolute top-40 right-20 text-blue-500/20 float-2'
+        >
+          <Code className='h-8 w-8' />
+        </div>
+        <div
+          ref={(el) => {
+            if (el) floatingElementsRef.current[2] = el;
+          }}
+          className='absolute bottom-40 left-20 text-purple-500/20 float-3'
+        >
+          <Star className='h-7 w-7' />
+        </div>
+        <div
+          ref={(el) => {
+            if (el) floatingElementsRef.current[3] = el;
+          }}
+          className='absolute bottom-20 right-10 text-green-500/20 float-4'
+        >
+          <Zap className='h-6 w-6' />
         </div>
 
-        <div className='space-y-12'>
-          {experiences.map((exp, index) => (
-            <Card
-              key={exp.id}
-              ref={(el) => {
-                cardsRef.current[index] = el as HTMLDivElement;
-              }}
-              className='group relative overflow-hidden bg-card/60 backdrop-blur-sm border-border/50 shadow-2xl hover:shadow-3xl transition-all duration-700 hover:-translate-y-3 hover:rotate-1'
-            >
-              {/* Gradient Background */}
-              <div
-                className={`absolute inset-0 bg-gradient-to-br ${exp.color} opacity-0 group-hover:opacity-5 transition-opacity duration-500`}
-              />
-              <div className='grid lg:grid-cols-12 gap-8 p-8 lg:p-12'>
-                {/* Left Column - Company Info */}
-                <div className='lg:col-span-4 space-y-6'>
-                  <div className='space-y-4'>
-                    <div className='flex items-center gap-3'>
-                      <div
-                        className={`w-12 h-12 bg-gradient-to-br ${exp.color} rounded-2xl flex items-center justify-center text-white font-black text-xl shadow-lg`}
-                      >
-                        {exp.company.charAt(0)}
-                      </div>
-                      <div>
-                        <h3 className='text-2xl font-bold group-hover:text-primary transition-colors duration-300'>
-                          {exp.company}
-                        </h3>
-                        {/* Removed website link as it's not in PDF */}
-                      </div>
-                    </div>
-                    <div className='space-y-3'>
-                      <h4 className='text-xl font-semibold text-foreground'>
-                        {exp.position}
-                      </h4>
-                      <div className='flex flex-wrap gap-3 text-sm text-muted-foreground'>
-                        <div className='flex items-center gap-1'>
-                          <Calendar className='h-4 w-4' />
-                          {exp.duration}
-                        </div>
-                        {exp.location && (
-                          <div className='flex items-center gap-1'>
-                            <MapPin className='h-4 w-4' />
-                            {exp.location}
-                          </div>
-                        )}
-                        <Badge
-                          variant='secondary'
-                          className='bg-primary/10 text-primary border-primary/20'
-                        >
-                          {exp.type}
-                        </Badge>
-                      </div>
-                    </div>
-                  </div>
-                  <div className='space-y-4'>
-                    <h5 className='font-semibold text-foreground'>
-                      Technologies
-                    </h5>
-                    <div className='flex flex-wrap gap-2'>
-                      {exp.technologies.map((tech) => (
-                        <Badge
-                          key={tech}
-                          variant='outline'
-                          className='text-xs px-3 py-1 bg-secondary/50 hover:bg-secondary transition-colors duration-300 cursor-default'
-                        >
-                          {tech}
-                        </Badge>
-                      ))}
-                    </div>
-                  </div>
-                </div>
+        <div className='container mx-auto max-w-7xl relative z-10'>
+          <div ref={titleRef} className='text-center mb-20'>
+            <div className='inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary/10 backdrop-blur-sm border border-primary/20 text-primary text-sm font-medium mb-8 shadow-lg shadow-primary/10'>
+              <Calendar className='h-4 w-4' />
+              Professional Journey
+              <div className='w-2 h-2 bg-primary rounded-full animate-pulse' />
+            </div>
 
-                {/* Right Column - Description & Achievements */}
-                <div className='lg:col-span-8 space-y-8'>
-                  <div className='space-y-4'>
-                    <h5 className='font-semibold text-foreground text-lg'>
-                      Role Overview
-                    </h5>
-                    <p className='text-muted-foreground leading-relaxed text-lg'>
-                      {exp.description}
-                    </p>
-                  </div>
-                  <div className='space-y-6'>
-                    <h5 className='font-semibold text-foreground text-lg'>
-                      Key Achievements
-                    </h5>
-                    <div className='grid sm:grid-cols-2 gap-4'>
-                      {exp.achievements.map((achievement, i) => (
+            <h2 className='text-5xl md:text-7xl font-black mb-8 bg-gradient-to-r from-foreground via-primary to-blue-600 bg-clip-text text-transparent drop-shadow-sm'>
+              Experience
+            </h2>
+
+            <div className='w-32 h-1.5 bg-gradient-to-r from-primary via-blue-500 to-purple-500 mx-auto rounded-full mb-8 shadow-lg shadow-primary/20' />
+
+            <p className='text-xl md:text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed font-light'>
+              A journey through innovative companies, impactful projects, and
+              continuous growth in the ever-evolving world of technology
+            </p>
+          </div>
+
+          <div className='space-y-12'>
+            {experiences.map((exp, index) => (
+              <Card
+                key={exp.id}
+                ref={(el) => {
+                  if (el) cardsRef.current[index] = el as HTMLDivElement;
+                }}
+                className='group relative overflow-hidden bg-card/60 backdrop-blur-sm border-border/50 shadow-2xl hover:shadow-3xl transition-all duration-700 hover:-translate-y-3 hover:rotate-1'
+              >
+                <div
+                  className={`absolute inset-0 bg-gradient-to-br ${exp.color} opacity-0 group-hover:opacity-5 transition-opacity duration-500`}
+                />
+                <div className='grid lg:grid-cols-12 gap-8 p-8 lg:p-12'>
+                  {/* Left Column - Company Info */}
+                  <div className='lg:col-span-4 space-y-6'>
+                    <div className='space-y-4'>
+                      <div className='flex items-center gap-3'>
                         <div
-                          key={i}
-                          className='group/achievement flex items-start gap-4 p-4 rounded-2xl bg-background/30 backdrop-blur-sm border border-border/30 hover:bg-background/50 transition-all duration-300 hover:scale-105'
+                          className={`w-12 h-12 bg-gradient-to-br ${exp.color} rounded-2xl flex items-center justify-center text-white font-black text-xl shadow-lg`}
                         >
-                          <div
-                            className={`p-2 rounded-xl bg-gradient-to-br ${exp.color} bg-opacity-10 group-hover/achievement:bg-opacity-20 transition-all duration-300`}
-                          >
-                            <achievement.icon className='h-5 w-5 text-primary' />
+                          {exp.company.charAt(0)}
+                        </div>
+                        <div>
+                          <h3 className='text-2xl font-bold group-hover:text-primary transition-colors duration-300'>
+                            {exp.company}
+                          </h3>
+                        </div>
+                      </div>
+                      <div className='space-y-3'>
+                        <h4 className='text-xl font-semibold text-foreground'>
+                          {exp.position}
+                        </h4>
+                        <div className='flex flex-wrap gap-3 text-sm text-muted-foreground'>
+                          <div className='flex items-center gap-1'>
+                            <Calendar className='h-4 w-4' />
+                            {exp.duration}
                           </div>
-                          <div className='flex-1'>
-                            <p className='text-sm font-medium text-foreground mb-1'>
-                              {achievement.text}
-                            </p>
+                          {exp.location && (
+                            <div className='flex items-center gap-1'>
+                              <MapPin className='h-4 w-4' />
+                              {exp.location}
+                            </div>
+                          )}
+                          <Badge
+                            variant='secondary'
+                            className='bg-primary/10 text-primary border-primary/20'
+                          >
+                            {exp.type}
+                          </Badge>
+                        </div>
+                      </div>
+                    </div>
+                    <div className='space-y-4'>
+                      <h5 className='font-semibold text-foreground'>
+                        Technologies
+                      </h5>
+                      <div className='flex flex-wrap gap-2'>
+                        {exp.technologies.map((tech) => (
+                          <Badge
+                            key={tech}
+                            variant='outline'
+                            className='text-xs px-3 py-1 bg-secondary/50 hover:bg-secondary transition-colors duration-300 cursor-default'
+                          >
+                            {tech}
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Right Column - Description & Achievements */}
+                  <div className='lg:col-span-8 space-y-8'>
+                    <div className='space-y-4'>
+                      <h5 className='font-semibold text-foreground text-lg'>
+                        Role Overview
+                      </h5>
+                      <p className='text-muted-foreground leading-relaxed text-lg'>
+                        {exp.description}
+                      </p>
+                    </div>
+                    <div className='space-y-6'>
+                      <h5 className='font-semibold text-foreground text-lg'>
+                        Key Achievements
+                      </h5>
+                      <div className='grid sm:grid-cols-2 gap-4'>
+                        {exp.achievements.map((achievement, i) => (
+                          <div
+                            key={i}
+                            className='group/achievement flex items-start gap-4 p-4 rounded-2xl bg-background/30 backdrop-blur-sm border border-border/30 hover:bg-background/50 transition-all duration-300 hover:scale-105'
+                          >
                             <div
-                              className={`text-2xl font-black bg-gradient-to-r ${exp.color} bg-clip-text text-transparent`}
+                              className={`p-2 rounded-xl bg-gradient-to-br ${exp.color} bg-opacity-10 group-hover/achievement:bg-opacity-20 transition-all duration-300`}
                             >
-                              {achievement.metric}
+                              <achievement.icon className='h-5 w-5 text-primary' />
+                            </div>
+                            <div className='flex-1'>
+                              <p className='text-sm font-medium text-foreground mb-1'>
+                                {achievement.text}
+                              </p>
+                              <div
+                                className={`text-2xl font-black bg-gradient-to-r ${exp.color} bg-clip-text text-transparent`}
+                              >
+                                {achievement.metric}
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      ))}
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </Card>
-          ))}
-        </div>
+              </Card>
+            ))}
+          </div>
 
-        {/* Call to Action */}
-        <div className='text-center mt-16'>
-          <Button
-            size='lg'
-            className='bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-orange-600/90 text-white shadow-2xl text-lg px-8 py-6 rounded-2xl transition-all duration-500 hover:scale-105'
-          >
-            <ExternalLink className='mr-2 h-5 w-5' />
-            View Full Resume
-          </Button>
+          <div className='text-center mt-20'>
+            <Button
+              size='lg'
+              className='bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90 text-white shadow-2xl text-lg px-10 py-7 rounded-2xl transition-all duration-500 hover:scale-105 hover:shadow-3xl font-semibold'
+            >
+              <ExternalLink className='mr-3 h-5 w-5' />
+              View Full Resume
+            </Button>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }

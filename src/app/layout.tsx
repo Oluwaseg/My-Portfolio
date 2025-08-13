@@ -28,12 +28,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en' suppressHydrationWarning>
-      <body
-        className={`${poppins.variable} ${roboto.variable} font-sans`}
-        style={{
-          fontFamily: 'var(--font-poppins), var(--font-roboto), sans-serif',
-        }}
-      >
+      <body className={`${poppins.variable} ${roboto.variable} font-sans`}>
         <SmoothScrollProvider>{children}</SmoothScrollProvider>
       </body>
     </html>
