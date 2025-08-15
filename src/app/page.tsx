@@ -1,13 +1,13 @@
 'use client';
 
-import { AboutSection } from '@/components/about-section';
+import { AboutSection } from '@/components/About';
 import { Navbar } from '@/components/common/Navbar';
-import { ContactSection } from '@/components/contact-section';
-import { ExperienceSection } from '@/components/experience-section';
-import { HeroSection } from '@/components/hero-section';
-import { ProjectsSection } from '@/components/projects-section';
+import { ContactSection } from '@/components/Contact';
+import { ExperienceSection } from '@/components/Experience';
+import { HeroSection } from '@/components/Hero';
+import { ProjectsSection } from '@/components/Projects';
 import { ThemeProvider } from '@/components/providers/ThemeProvider';
-import { ScrollProgress } from '@/components/scroll-progress';
+import { ScrollProgress } from '@/components/ScrollProgress';
 import { useRoleContent } from '@/hooks/useRoleContent';
 import Head from 'next/head';
 

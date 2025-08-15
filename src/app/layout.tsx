@@ -1,4 +1,4 @@
-import { SmoothScrollProvider } from '@/components/smooth-scroll-provider';
+import { SmoothScrollProvider } from '@/components/SmoothScrollProvider';
 import type { Metadata } from 'next';
 import { Poppins, Roboto } from 'next/font/google';
 import type React from 'react';

@@ -1,6 +1,6 @@
 'use client';
 
-import { useLenis } from '@/components/smooth-scroll-provider';
+import { useLenis } from '@/components/SmoothScrollProvider';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { AnimatedSubtitle } from '@/hooks/animated-subtitle';

@@ -107,63 +107,63 @@ const expertiseAreas = {
     },
   ],
   fullstack: [
-    {
-      title: 'Frontend Development',
-      description:
-        'React component architecture, Angular SPAs, Next.js SSR/ISR, Tailwind CSS, responsive/accessibility best practices',
-      technologies: [
-        'React',
-        'Angular',
-        'Next.js',
-        'Tailwind CSS',
-        'Shadcn/ui',
-        'GSAP',
-        'Three.js',
-        'Framer Motion',
-      ],
-      icon: Code,
-      color: 'from-blue-500 to-cyan-500',
-    },
-    {
-      title: 'Backend & APIs',
-      description:
-        'Node.js with Express & NestJS, REST and GraphQL endpoints, JWT/OAuth2 auth, validation & security',
-      technologies: [
-        'Node.js',
-        'Express.js',
-        'NestJS',
-        'REST APIs',
-        'GraphQL',
-        'JWT',
-        'OAuth2',
-      ],
-      icon: Server,
-      color: 'from-emerald-500 to-teal-500',
-    },
-    {
-      title: 'Data Management',
-      description:
-        'MySQL/PostgreSQL schema design and optimization, MongoDB modeling, Redis caching strategies',
-      technologies: ['MySQL', 'PostgreSQL', 'MongoDB', 'Redis'],
-      icon: Database,
-      color: 'from-purple-500 to-pink-500',
-    },
-    {
-      title: 'Testing & Quality',
-      description:
-        'Unit/integration tests (Jest, Supertest), end-to-end workflows (Cypress, Postman), TDD habits',
-      technologies: ['Jest', 'Supertest', 'Cypress', 'Postman', 'TDD'],
-      icon: TestTube,
-      color: 'from-orange-500 to-red-500',
-    },
-    {
-      title: 'CI/CD & DevOps',
-      description:
-        'Docker containerization, GitHub Actions pipelines, automated builds/tests/deployments, basic monitoring',
-      technologies: ['Docker', 'GitHub Actions', 'CI/CD', 'DevOps'],
-      icon: GitBranch,
-      color: 'from-yellow-500 to-amber-500',
-    },
+  {
+    title: 'Frontend Development',
+    description:
+      'React component architecture, Angular SPAs, Next.js SSR/ISR, Tailwind CSS, responsive/accessibility best practices',
+    technologies: [
+      'React',
+      'Angular',
+      'Next.js',
+      'Tailwind CSS',
+      'Shadcn/ui',
+      'GSAP',
+      'Three.js',
+      'Framer Motion',
+    ],
+    icon: Code,
+    color: 'from-blue-500 to-cyan-500',
+  },
+  {
+    title: 'Backend & APIs',
+    description:
+      'Node.js with Express & NestJS, REST and GraphQL endpoints, JWT/OAuth2 auth, validation & security',
+    technologies: [
+      'Node.js',
+      'Express.js',
+      'NestJS',
+      'REST APIs',
+      'GraphQL',
+      'JWT',
+      'OAuth2',
+    ],
+    icon: Server,
+    color: 'from-emerald-500 to-teal-500',
+  },
+  {
+    title: 'Data Management',
+    description:
+      'MySQL/PostgreSQL schema design and optimization, MongoDB modeling, Redis caching strategies',
+    technologies: ['MySQL', 'PostgreSQL', 'MongoDB', 'Redis'],
+    icon: Database,
+    color: 'from-purple-500 to-pink-500',
+  },
+  {
+    title: 'Testing & Quality',
+    description:
+      'Unit/integration tests (Jest, Supertest), end-to-end workflows (Cypress, Postman), TDD habits',
+    technologies: ['Jest', 'Supertest', 'Cypress', 'Postman', 'TDD'],
+    icon: TestTube,
+    color: 'from-orange-500 to-red-500',
+  },
+  {
+    title: 'CI/CD & DevOps',
+    description:
+      'Docker containerization, GitHub Actions pipelines, automated builds/tests/deployments, basic monitoring',
+    technologies: ['Docker', 'GitHub Actions', 'CI/CD', 'DevOps'],
+    icon: GitBranch,
+    color: 'from-yellow-500 to-amber-500',
+  },
   ],
 };
 

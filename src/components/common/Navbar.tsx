@@ -1,8 +1,6 @@
 'use client';
-
 import type React from 'react';
-
-import { useLenis } from '@/components/smooth-scroll-provider';
+import { useLenis } from '@/components/SmoothScrollProvider';
 import { Button } from '@/components/ui/button';
 import { useRoleContent } from '@/hooks/useRoleContent';
 import { cn } from '@/lib/utils';
@@ -54,23 +52,33 @@ export function Navbar() {
   }, []);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveSection(entry.target.id as SectionId);
-          }
-        });
-      },
-      { root: null, rootMargin: '-40% 0px -40% 0px', threshold: 0 }
-    );
+    const timer = setTimeout(() => {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              console.log('Section intersecting:', entry.target.id);
+              setActiveSection(entry.target.id as SectionId);
+            }
+          });
+        },
+        { root: null, rootMargin: '-20% 0px -20% 0px', threshold: 0.1 }
+      );
 
-    sections.forEach((section) => {
-      const el = document.getElementById(section.id);
-      if (el) observer.observe(el);
-    });
+      sections.forEach((section) => {
+        const el = document.getElementById(section.id);
+        if (el) {
+          console.log('Observing section:', section.id);
+          observer.observe(el);
+        } else {
+          console.log('Section not found:', section.id);
+        }
+      });
 
-    return () => observer.disconnect();
+      return () => observer.disconnect();
+    }, 100);
+
+    return () => clearTimeout(timer);
   }, [sections]);
 
   useEffect(() => {
