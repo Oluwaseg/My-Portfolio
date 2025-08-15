@@ -5,7 +5,6 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { AnimatedSubtitle } from '@/hooks/animated-subtitle';
 import { AutoTypingText } from '@/hooks/auto-typing-text';
-import { useRoleContent } from '@/hooks/useRoleContent';
 import {
   ArrowDown,
   ArrowUpRight,
@@ -21,9 +20,13 @@ import {
   Zap,
 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
+import { roleContent, RoleKey } from '@/config/roleContent';
 
-export function HeroSection() {
-  const { content } = useRoleContent();
+interface HeroSectionProps {
+  content: typeof roleContent[RoleKey];
+}
+
+export function HeroSection({ content }: HeroSectionProps) {
   const lenis = useLenis();
   const heroRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);

@@ -3,7 +3,7 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { useRoleContent } from '@/hooks/useRoleContent';
+import { roleContent, RoleKey } from '@/config/roleContent';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import {
@@ -33,8 +33,11 @@ const iconMap = {
   Star,
 };
 
-export function ExperienceSection() {
-  const { content } = useRoleContent();
+interface ExperienceSectionProps {
+  content: typeof roleContent[RoleKey];
+}
+
+export function ExperienceSection({ content }: ExperienceSectionProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement[]>([]);

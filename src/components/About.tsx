@@ -1,7 +1,7 @@
 'use client';
 
 import { Badge } from '@/components/ui/badge';
-import { useRoleContent } from '@/hooks/useRoleContent';
+import { roleContent, RoleKey } from '@/config/roleContent';
 import {
   Code,
   Database,
@@ -174,9 +174,12 @@ const stats = [
   { label: 'User Satisfaction', value: 20, suffix: '%' },
 ];
 
-export function AboutSection() {
-  const { content, roleKey } = useRoleContent();
-  
+interface AboutSectionProps {
+  content: typeof roleContent[RoleKey];
+  roleKey: RoleKey;
+}
+
+export function AboutSection({ content, roleKey }: AboutSectionProps) {
   // Get the relevant expertise areas based on the selected role
   const currentExpertiseAreas = expertiseAreas[roleKey] || expertiseAreas.fullstack;
   
