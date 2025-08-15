@@ -226,7 +226,13 @@ export function HeroSection() {
                   onClick={() => {
                     const projectsSection = document.getElementById('projects');
                     if (projectsSection) {
-                      projectsSection.scrollIntoView({ behavior: 'smooth' });
+                      const navbarHeight = 80;
+                      const elementPosition = projectsSection.offsetTop - navbarHeight;
+                      
+                      window.scrollTo({
+                        top: elementPosition,
+                        behavior: 'smooth'
+                      });
                     }
                   }}
                 >

@@ -200,6 +200,7 @@ export function Navbar() {
                 className='hidden md:flex items-center gap-2 bg-background/50 backdrop-blur-sm border-border/50 hover:bg-accent/50 transition-all duration-300 rounded-xl px-4 py-2 group hover:scale-105 hover:shadow-lg relative overflow-hidden'
                 style={getMagneticStyle(resumeRef)}
                 onClick={() => {
+
                   const link = document.createElement('a');
                   if (roleKey === 'frontend') {
                     link.href = '/resumes/frontend-resume.pdf';
