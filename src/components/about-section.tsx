@@ -13,65 +13,159 @@ import {
   Zap,
 } from 'lucide-react';
 
-const expertiseAreas = [
-  {
-    title: 'Frontend Development',
-    description:
-      'React component architecture, Angular SPAs, Next.js SSR/ISR, Tailwind CSS, responsive/accessibility best practices',
-    technologies: [
-      'React',
-      'Angular',
-      'Next.js',
-      'Tailwind CSS',
-      'Shadcn/ui',
-      'GSAP',
-      'Three.js',
-      'Framer Motion',
-    ],
-    icon: Code,
-    color: 'from-blue-500 to-cyan-500',
-  },
-  {
-    title: 'Backend & APIs',
-    description:
-      'Node.js with Express & NestJS, REST and GraphQL endpoints, JWT/OAuth2 auth, validation & security',
-    technologies: [
-      'Node.js',
-      'Express.js',
-      'NestJS',
-      'REST APIs',
-      'GraphQL',
-      'JWT',
-      'OAuth2',
-    ],
-    icon: Server,
-    color: 'from-emerald-500 to-teal-500',
-  },
-  {
-    title: 'Data Management',
-    description:
-      'MySQL/PostgreSQL schema design and optimization, MongoDB modeling, Redis caching strategies',
-    technologies: ['MySQL', 'PostgreSQL', 'MongoDB', 'Redis'],
-    icon: Database,
-    color: 'from-purple-500 to-pink-500',
-  },
-  {
-    title: 'Testing & Quality',
-    description:
-      'Unit/integration tests (Jest, Supertest), end-to-end workflows (Cypress, Postman), TDD habits',
-    technologies: ['Jest', 'Supertest', 'Cypress', 'Postman', 'TDD'],
-    icon: TestTube,
-    color: 'from-orange-500 to-red-500',
-  },
-  {
-    title: 'CI/CD & DevOps',
-    description:
-      'Docker containerization, GitHub Actions pipelines, automated builds/tests/deployments, basic monitoring',
-    technologies: ['Docker', 'GitHub Actions', 'CI/CD', 'DevOps'],
-    icon: GitBranch,
-    color: 'from-yellow-500 to-amber-500',
-  },
-];
+const expertiseAreas = {
+  frontend: [
+    {
+      title: 'Frontend Development',
+      description:
+        'React component architecture, Angular SPAs, Next.js SSR/ISR, Tailwind CSS, responsive/accessibility best practices',
+      technologies: [
+        'React',
+        'Angular',
+        'Next.js',
+        'Tailwind CSS',
+        'Shadcn/ui',
+        'GSAP',
+        'Three.js',
+        'Framer Motion',
+      ],
+      icon: Code,
+      color: 'from-blue-500 to-cyan-500',
+    },
+    {
+      title: 'UI/UX Design',
+      description:
+        'User interface design, responsive layouts, accessibility standards, design systems, and user experience optimization',
+      technologies: [
+        'Figma',
+        'Adobe XD',
+        'Responsive Design',
+        'Accessibility',
+        'Design Systems',
+        'User Research',
+      ],
+      icon: Lightbulb,
+      color: 'from-purple-500 to-pink-500',
+    },
+    {
+      title: 'Testing & Quality',
+      description:
+        'Unit/integration tests (Jest, Cypress), component testing, accessibility testing, and performance optimization',
+      technologies: ['Jest', 'Cypress', 'Storybook', 'Lighthouse', 'Performance'],
+      icon: TestTube,
+      color: 'from-orange-500 to-red-500',
+    },
+    {
+      title: 'Build Tools & Optimization',
+      description:
+        'Webpack, Vite, code splitting, lazy loading, bundle optimization, and modern build workflows',
+      technologies: ['Webpack', 'Vite', 'Code Splitting', 'Lazy Loading', 'Bundle Optimization'],
+      icon: GitBranch,
+      color: 'from-yellow-500 to-amber-500',
+    },
+  ],
+  backend: [
+    {
+      title: 'Backend & APIs',
+      description:
+        'Node.js with Express & NestJS, REST and GraphQL endpoints, JWT/OAuth2 auth, validation & security',
+      technologies: [
+        'Node.js',
+        'Express.js',
+        'NestJS',
+        'REST APIs',
+        'GraphQL',
+        'JWT',
+        'OAuth2',
+      ],
+      icon: Server,
+      color: 'from-emerald-500 to-teal-500',
+    },
+    {
+      title: 'Data Management',
+      description:
+        'MySQL/PostgreSQL schema design and optimization, MongoDB modeling, Redis caching strategies',
+      technologies: ['MySQL', 'PostgreSQL', 'MongoDB', 'Redis'],
+      icon: Database,
+      color: 'from-purple-500 to-pink-500',
+    },
+    {
+      title: 'Testing & Quality',
+      description:
+        'Unit/integration tests (Jest, Supertest), API testing, database testing, and TDD practices',
+      technologies: ['Jest', 'Supertest', 'API Testing', 'Database Testing', 'TDD'],
+      icon: TestTube,
+      color: 'from-orange-500 to-red-500',
+    },
+    {
+      title: 'CI/CD & DevOps',
+      description:
+        'Docker containerization, GitHub Actions pipelines, automated builds/tests/deployments, monitoring',
+      technologies: ['Docker', 'GitHub Actions', 'CI/CD', 'DevOps', 'Monitoring'],
+      icon: GitBranch,
+      color: 'from-yellow-500 to-amber-500',
+    },
+  ],
+  fullstack: [
+    {
+      title: 'Frontend Development',
+      description:
+        'React component architecture, Angular SPAs, Next.js SSR/ISR, Tailwind CSS, responsive/accessibility best practices',
+      technologies: [
+        'React',
+        'Angular',
+        'Next.js',
+        'Tailwind CSS',
+        'Shadcn/ui',
+        'GSAP',
+        'Three.js',
+        'Framer Motion',
+      ],
+      icon: Code,
+      color: 'from-blue-500 to-cyan-500',
+    },
+    {
+      title: 'Backend & APIs',
+      description:
+        'Node.js with Express & NestJS, REST and GraphQL endpoints, JWT/OAuth2 auth, validation & security',
+      technologies: [
+        'Node.js',
+        'Express.js',
+        'NestJS',
+        'REST APIs',
+        'GraphQL',
+        'JWT',
+        'OAuth2',
+      ],
+      icon: Server,
+      color: 'from-emerald-500 to-teal-500',
+    },
+    {
+      title: 'Data Management',
+      description:
+        'MySQL/PostgreSQL schema design and optimization, MongoDB modeling, Redis caching strategies',
+      technologies: ['MySQL', 'PostgreSQL', 'MongoDB', 'Redis'],
+      icon: Database,
+      color: 'from-purple-500 to-pink-500',
+    },
+    {
+      title: 'Testing & Quality',
+      description:
+        'Unit/integration tests (Jest, Supertest), end-to-end workflows (Cypress, Postman), TDD habits',
+      technologies: ['Jest', 'Supertest', 'Cypress', 'Postman', 'TDD'],
+      icon: TestTube,
+      color: 'from-orange-500 to-red-500',
+    },
+    {
+      title: 'CI/CD & DevOps',
+      description:
+        'Docker containerization, GitHub Actions pipelines, automated builds/tests/deployments, basic monitoring',
+      technologies: ['Docker', 'GitHub Actions', 'CI/CD', 'DevOps'],
+      icon: GitBranch,
+      color: 'from-yellow-500 to-amber-500',
+    },
+  ],
+};
 
 const stats = [
   { label: 'Years Experience', value: 4, suffix: '+' },
@@ -81,7 +175,10 @@ const stats = [
 ];
 
 export function AboutSection() {
-  const { content } = useRoleContent();
+  const { content, roleKey } = useRoleContent();
+  
+  // Get the relevant expertise areas based on the selected role
+  const currentExpertiseAreas = expertiseAreas[roleKey] || expertiseAreas.fullstack;
   
   return (
     <section
@@ -167,13 +264,14 @@ export function AboutSection() {
             Areas of Expertise
           </h3>
           <p className='text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto'>
-            My experience across the stack ensures robust, scalable, and
-            user-friendly digital solutions.
+            {roleKey === 'frontend' && 'My frontend expertise ensures pixel-perfect, accessible, and performant user interfaces.'}
+            {roleKey === 'backend' && 'My backend expertise focuses on scalable APIs, robust data management, and system optimization.'}
+            {roleKey === 'fullstack' && 'My experience across the stack ensures robust, scalable, and user-friendly digital solutions.'}
           </p>
         </div>
 
         <div className='grid grid-cols-1 lg:grid-cols-2 gap-x-12 gap-y-8 max-w-6xl mx-auto text-left'>
-          {expertiseAreas.map((area, index) => {
+          {currentExpertiseAreas.map((area, index) => {
             const IconComponent = area.icon;
             return (
               <div
