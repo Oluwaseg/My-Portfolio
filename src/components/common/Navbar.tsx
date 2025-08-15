@@ -4,6 +4,7 @@ import type React from 'react';
 
 import { useLenis } from '@/components/smooth-scroll-provider';
 import { Button } from '@/components/ui/button';
+import { useRoleContent } from '@/hooks/useRoleContent';
 import { cn } from '@/lib/utils';
 import { ArrowUpRight, Download, Menu, X } from 'lucide-react';
 import Image from 'next/image';
@@ -14,6 +15,7 @@ import { ModeToggle } from './Switch';
 type SectionId = 'hero' | 'about' | 'experience' | 'projects' | 'contact';
 
 export function Navbar() {
+  const { content } = useRoleContent();
   const [activeSection, setActiveSection] = useState<SectionId>('hero');
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -148,7 +150,7 @@ export function Navbar() {
                   Samuel Oluwasegun
                 </div>
                 <div className='text-xs text-muted-foreground font-medium tracking-wider uppercase group-hover:text-primary/70 transition-colors duration-300'>
-                  Full Stack Developer
+                  {content.roleBadge}
                 </div>
               </div>
             </Link>

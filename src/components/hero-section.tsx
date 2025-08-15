@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { AnimatedSubtitle } from '@/hooks/animated-subtitle';
 import { AutoTypingText } from '@/hooks/auto-typing-text';
+import { useRoleContent } from '@/hooks/useRoleContent';
 import {
   ArrowDown,
   ArrowUpRight,
@@ -21,6 +22,7 @@ import {
 import { useEffect, useRef, useState } from 'react';
 
 export function HeroSection() {
+  const { content } = useRoleContent();
   const lenis = useLenis();
   const heroRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
@@ -135,13 +137,7 @@ export function HeroSection() {
                   className='text-lg px-6 py-3 bg-gradient-to-r from-primary via-blue-500 to-orange-500 bg-clip-text text-transparent border-primary/30 font-semibold min-w-[300px] justify-center shadow-lg hover:shadow-primary/20 transition-all duration-300 hover:scale-105'
                 >
                   <AutoTypingText
-                    roles={[
-                      'Full Stack Architect',
-                      'Full Stack Developer',
-                      'Full Stack Engineer',
-                      'UI/UX Designer',
-                      'Tech Innovator',
-                    ]}
+                    roles={content.autoTypingRoles}
                   />
                 </Badge>
               </div>
@@ -157,7 +153,7 @@ export function HeroSection() {
               }`}
             >
               <AnimatedSubtitle
-                text="I craft <span class='text-primary font-semibold bg-primary/10 px-2 py-1 rounded-lg'>next-generation</span> digital experiences that blend cutting-edge technology with intuitive design, delivering solutions that don't just work—they <span class='text-blue-500 font-semibold bg-blue-500/10 px-2 py-1 rounded-lg'>inspire</span> and <span class='text-orange-500 font-semibold bg-orange-500/10 px-2 py-1 rounded-lg'>transform</span>."
+                text={content.heroSubtitle}
                 className='text-lg sm:text-xl lg:text-2xl max-w-4xl leading-relaxed text-muted-foreground'
                 delay={2000}
               />

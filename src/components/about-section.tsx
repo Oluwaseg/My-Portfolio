@@ -1,6 +1,7 @@
 'use client';
 
 import { Badge } from '@/components/ui/badge';
+import { useRoleContent } from '@/hooks/useRoleContent';
 import {
   Code,
   Database,
@@ -80,6 +81,8 @@ const stats = [
 ];
 
 export function AboutSection() {
+  const { content } = useRoleContent();
+  
   return (
     <section
       id='about'
@@ -126,16 +129,7 @@ export function AboutSection() {
           className='mb-16 max-w-4xl mx-auto text-muted-foreground space-y-6'
         >
           <p className='text-xl md:text-2xl leading-relaxed'>
-            I&apos;m a
-            <span className='ml-1 text-primary font-semibold bg-primary/10 px-2 py-1 rounded-md'>
-              full-stack software engineer
-            </span>
-            with 4+ years of experience building user-centric web applications
-            from concept to production. I led a redesign of Finchat&apos;s
-            dashboard, improving load times by 30% and boosting user
-            satisfaction by 20%. During my tenure at Noma Gaming, I developed a
-            matchmaking system that enhanced game session stability and reduced
-            connection errors by 25%.
+            {content.aboutText}
           </p>
         </div>
 

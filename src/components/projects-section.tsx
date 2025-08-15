@@ -4,6 +4,7 @@ import type React from 'react';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+
 import {
   Card,
   CardContent,
@@ -31,20 +32,21 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 gsap.registerPlugin(ScrollTrigger);
 
 type Project = {
-  _id: string;
-  title: string;
-  description: string;
-  category: string;
-  technologies: string[];
-  githubLink: string;
-  liveLink: string;
-  image?: string;
-  longDescription?: string;
-  featured?: boolean;
-  stats?: { stars: number; forks: number };
+	_id: string;
+	title: string;
+	description: string;
+	category: string;
+	technologies: string[];
+	githubLink: string;
+	liveLink: string;
+	image?: string;
+	longDescription?: string;
+	featured?: boolean;
+	stats?: { stars: number; forks: number };
 };
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
 
 const ImageModal = ({
   isOpen,
@@ -101,7 +103,6 @@ export function ProjectsSection() {
     title: string;
   } | null>(null);
 
-  // Mouse tracking for magnetic effects
   const handleMouseMove = useCallback((e: MouseEvent) => {
     mouseRef.current = { x: e.clientX, y: e.clientY };
   }, []);
@@ -136,7 +137,6 @@ export function ProjectsSection() {
     fetchProjects();
   }, []);
 
-  // Enhanced GSAP animations
   useEffect(() => {
     if (!loading && projects.length > 0) {
       const tl = gsap.timeline({
@@ -148,7 +148,6 @@ export function ProjectsSection() {
         },
       });
 
-      // Title animation with morphing effect
       tl.fromTo(
         titleRef.current,
         {
@@ -166,7 +165,6 @@ export function ProjectsSection() {
         }
       );
 
-      // Cards with 3D entrance
       tl.fromTo(
         cardsRef.current,
         {
@@ -201,7 +199,6 @@ export function ProjectsSection() {
   const featuredProjects = filteredProjects.filter((p) => p.featured);
   const otherProjects = filteredProjects.filter((p) => !p.featured);
 
-  // Magnetic card effect
   const handleCardHover = (
     index: number,
     e: React.MouseEvent<HTMLDivElement>
@@ -286,7 +283,6 @@ export function ProjectsSection() {
       <div className='absolute inset-0'>
         <div className='absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-blue-500/5' />
 
-        {/* Floating Elements */}
         <div className='absolute top-20 left-10 text-primary/20 animate-float-slow'>
           <div className='w-8 h-8 rounded-full bg-gradient-to-r from-primary/30 to-blue-500/30 blur-sm'></div>
         </div>
@@ -312,7 +308,6 @@ export function ProjectsSection() {
           <div className='w-6 h-6 rotate-12 bg-gradient-to-r from-pink-500/30 to-rose-500/30 blur-sm'></div>
         </div>
 
-        {/* Floating Particles */}
         <div className='absolute top-1/4 left-1/2 w-2 h-2 bg-primary/40 rounded-full animate-float-slow blur-sm'></div>
         <div className='absolute bottom-1/4 right-1/2 w-3 h-3 bg-blue-500/40 rounded-full animate-float-reverse blur-sm'></div>
         <div className='absolute top-3/4 left-1/4 w-1 h-1 bg-purple-500/40 rounded-full animate-float-slow blur-sm'></div>
@@ -320,7 +315,6 @@ export function ProjectsSection() {
       </div>
 
       <div className='container mx-auto max-w-7xl relative z-10'>
-        {/* Enhanced Title Section */}
         <div ref={titleRef} className='text-center mb-16'>
           <div className='relative inline-block'>
             <h2 className='text-6xl md:text-8xl font-black mb-8 bg-gradient-to-r from-foreground via-primary to-blue-600 bg-clip-text text-transparent relative'>
@@ -341,7 +335,6 @@ export function ProjectsSection() {
           </p>
         </div>
 
-        {/* Enhanced Filter Controls */}
         <div className='flex flex-col sm:flex-row items-center justify-between mb-12 gap-4'>
           <div className='flex items-center gap-2 flex-wrap'>
             <Filter className='h-5 w-5 text-muted-foreground' />
@@ -382,7 +375,6 @@ export function ProjectsSection() {
           </div>
         </div>
 
-        {/* Featured Projects with 3D Effects */}
         {featuredProjects.length > 0 && (
           <div className='mb-20'>
             <div className='text-center mb-12'>
@@ -410,11 +402,9 @@ export function ProjectsSection() {
                   onMouseMove={(e) => handleCardHover(index, e)}
                   onMouseLeave={handleCardLeave}
                 >
-                  {/* Animated Border */}
                   <div className='absolute inset-0 bg-gradient-to-r from-primary/50 via-blue-500/50 to-purple-500/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-sm' />
                   <div className='absolute inset-[1px] bg-card/90 backdrop-blur-xl rounded-lg' />
 
-                  {/* Holographic Overlay */}
                   <div className='absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-blue-500/10 opacity-0 group-hover:opacity-100 transition-all duration-700' />
 
                   <div className='relative z-10'>
@@ -449,11 +439,9 @@ export function ProjectsSection() {
                         <ZoomIn className='h-12 w-12 text-white animate-pulse' />
                       </div>
 
-                      {/* Animated Overlay */}
                       <div className='absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent' />
                       <div className='absolute inset-0 bg-gradient-to-br from-primary/20 via-transparent to-blue-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500' />
 
-                      {/* Enhanced Stats */}
                       {project.stats && (
                         <div className='absolute top-4 right-4 flex gap-2'>
                           <div className='bg-black/80 backdrop-blur-sm rounded-full px-4 py-2 flex items-center gap-2 text-white text-sm font-medium border border-yellow-400/30'>
@@ -463,7 +451,6 @@ export function ProjectsSection() {
                         </div>
                       )}
 
-                      {/* Floating Badge */}
                       <div className='absolute top-4 left-4'>
                         <Badge className='bg-gradient-to-r from-primary to-blue-600 text-white border-0 shadow-lg animate-pulse-gentle'>
                           Featured
@@ -535,7 +522,6 @@ export function ProjectsSection() {
           </div>
         )}
 
-        {/* Other Projects with Enhanced Grid */}
         {otherProjects.length > 0 && (
           <div>
             <div className='text-center mb-12'>
@@ -566,9 +552,8 @@ export function ProjectsSection() {
                   }
                   onMouseLeave={handleCardLeave}
                 >
-                  {/* Subtle Border Animation */}
-                  <div className='absolute inset-0 bg-gradient-to-r from-primary/30 via-blue-500/30 to-purple-500/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-sm' />
-                  <div className='absolute inset-[1px] bg-card/90 backdrop-blur-lg rounded-lg' />
+                                  <div className='absolute inset-0 bg-gradient-to-r from-primary/30 via-blue-500/30 to-purple-500/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-sm' />
+                <div className='absolute inset-[1px] bg-card/90 backdrop-blur-lg rounded-lg' />
 
                   <div className='relative z-10'>
                     <div
@@ -689,7 +674,6 @@ export function ProjectsSection() {
           </div>
         )}
 
-        {/* Enhanced No Projects Message */}
         {filteredProjects.length === 0 && !loading && (
           <div className='text-center py-20'>
             <div className='text-8xl mb-6 animate-bounce'>🔍</div>
@@ -713,7 +697,6 @@ export function ProjectsSection() {
         title={modalImage?.title || ''}
       />
 
-      {/* Custom CSS for animations */}
       <style jsx>{`
         @keyframes float-slow {
           0%,
