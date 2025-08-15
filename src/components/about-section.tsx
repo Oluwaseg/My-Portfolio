@@ -11,7 +11,6 @@ import {
   TestTube,
   Zap,
 } from 'lucide-react';
-import { useRef } from 'react';
 
 const expertiseAreas = [
   {
@@ -81,14 +80,8 @@ const stats = [
 ];
 
 export function AboutSection() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const titleRef = useRef<HTMLDivElement>(null);
-  const statsRef = useRef<HTMLDivElement>(null);
-  const cardsRef = useRef<HTMLDivElement[]>([]);
-
   return (
     <section
-      ref={sectionRef}
       id='about'
       className='min-h-screen w-full flex flex-col items-center justify-center bg-gradient-to-br from-background via-background to-muted/30 py-20 px-4 md:px-8 relative overflow-hidden'
     >
@@ -109,19 +102,29 @@ export function AboutSection() {
 
       <div className='container mx-auto max-w-7xl text-center relative z-10'>
         {/* Section Title */}
-        <div ref={titleRef} className='mb-16'>
-          <div className='inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 backdrop-blur-sm border border-primary/20 text-primary text-sm font-medium mb-6 hover:bg-primary/15 transition-colors duration-300 animate-fade-in'>
+        <div
+          data-aos='fade-up'
+          data-aos-duration='1200'
+          data-aos-easing='ease-out-back'
+          className='mb-16'
+        >
+          <div className='inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 backdrop-blur-sm border border-primary/20 text-primary text-sm font-medium mb-6 hover:bg-primary/15 transition-colors duration-300'>
             <Lightbulb className='h-4 w-4' />
             Who I Am
           </div>
-          <h2 className='text-5xl md:text-7xl font-black mb-6 bg-gradient-to-r from-foreground via-primary to-blue-600 bg-clip-text text-transparent animate-slide-up'>
+          <h2 className='text-5xl md:text-7xl font-black mb-6 bg-gradient-to-r from-foreground via-primary to-blue-600 bg-clip-text text-transparent'>
             About Me
           </h2>
-          <div className='w-24 h-1 bg-gradient-to-r from-primary to-blue-500 mx-auto rounded-full shadow-lg shadow-primary/25 animate-scale-in' />
+          <div className='w-24 h-1 bg-gradient-to-r from-primary to-blue-500 mx-auto rounded-full shadow-lg shadow-primary/25' />
         </div>
 
         {/* Profile Summary */}
-        <div className='mb-16 max-w-4xl mx-auto text-muted-foreground space-y-6'>
+        <div
+          data-aos='zoom-in'
+          data-aos-delay='200'
+          data-aos-duration='800'
+          className='mb-16 max-w-4xl mx-auto text-muted-foreground space-y-6'
+        >
           <p className='text-xl md:text-2xl leading-relaxed'>
             I&apos;m a
             <span className='ml-1 text-primary font-semibold bg-primary/10 px-2 py-1 rounded-md'>
@@ -138,17 +141,14 @@ export function AboutSection() {
 
         {/* Stats Section */}
         <div className='mb-20'>
-          <div
-            ref={statsRef}
-            className='grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto'
-          >
+          <div className='grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto'>
             {stats.map((stat, index) => (
               <div
                 key={stat.label}
-                className='text-center group animate-bounce-in'
-                style={{
-                  animationDelay: `${index * 100}ms`,
-                }}
+                data-aos='fade-up'
+                data-aos-delay={300 + index * 100}
+                data-aos-duration='800'
+                className='text-center group'
               >
                 <div className='text-4xl md:text-5xl font-black bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent mb-2 group-hover:scale-110 transition-transform duration-300'>
                   {stat.value}
@@ -163,7 +163,12 @@ export function AboutSection() {
         </div>
 
         {/* Areas of Expertise */}
-        <div className='mb-12'>
+        <div
+          data-aos='fade-up'
+          data-aos-delay='700'
+          data-aos-duration='800'
+          className='mb-12'
+        >
           <h3 className='text-4xl md:text-5xl font-black mb-4 bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent'>
             Areas of Expertise
           </h3>
@@ -179,13 +184,10 @@ export function AboutSection() {
             return (
               <div
                 key={area.title}
-                ref={(el) => {
-                  if (el) cardsRef.current[index] = el;
-                }}
-                className='group relative p-6 rounded-2xl bg-card/60 backdrop-blur-sm border border-border/50 shadow-lg transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 hover:bg-card/80 cursor-pointer animate-slide-in-left'
-                style={{
-                  animationDelay: `${index * 150}ms`,
-                }}
+                data-aos='fade-up'
+                data-aos-delay={800 + index * 150}
+                data-aos-duration='800'
+                className='group relative p-6 rounded-2xl bg-card/60 backdrop-blur-sm border border-border/50 shadow-lg transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 hover:bg-card/80 cursor-pointer'
               >
                 {/* Hover Glow Effect */}
                 <div

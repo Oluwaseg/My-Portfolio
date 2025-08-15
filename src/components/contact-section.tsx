@@ -92,12 +92,17 @@ export function ContactSection() {
       </div>
 
       <div className='container mx-auto max-w-6xl relative z-10'>
-        <div className='text-center mb-16'>
-          <h2 className='text-5xl md:text-7xl font-black mb-6 bg-gradient-to-r from-foreground via-primary to-blue-600 bg-clip-text text-transparent animate-slide-up'>
+        <div
+          data-aos='fade-up'
+          data-aos-duration='1200'
+          data-aos-easing='ease-out-back'
+          className='text-center mb-16'
+        >
+          <h2 className='text-5xl md:text-7xl font-black mb-6 bg-gradient-to-r from-foreground via-primary to-blue-600 bg-clip-text text-transparent'>
             Let&apos;s Connect
           </h2>
-          <div className='w-24 h-1 bg-gradient-to-r from-primary to-blue-500 mx-auto rounded-full mb-6 animate-scale-in' />
-          <p className='text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto animate-fade-in'>
+          <div className='w-24 h-1 bg-gradient-to-r from-primary to-blue-500 mx-auto rounded-full mb-6' />
+          <p className='text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto'>
             Ready to bring your ideas to life? Let&apos;s discuss your next
             project
           </p>
@@ -105,7 +110,12 @@ export function ContactSection() {
 
         <div className='grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-5xl mx-auto'>
           {/* Enhanced Contact Form */}
-          <Card className='bg-card/80 backdrop-blur-sm border-border/50 shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-[1.02] group animate-slide-in-left'>
+          <Card
+            data-aos='fade-right'
+            data-aos-delay='200'
+            data-aos-duration='800'
+            className='bg-card/80 backdrop-blur-sm border-border/50 shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-[1.02] group'
+          >
             <CardHeader className='pb-6'>
               <CardTitle className='text-3xl font-bold bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent group-hover:from-primary group-hover:to-blue-600 transition-all duration-300'>
                 Send Message
@@ -236,7 +246,12 @@ export function ContactSection() {
           </Card>
 
           {/* Enhanced Contact Information */}
-          <div className='space-y-8 animate-slide-in-right'>
+          <div
+            data-aos='fade-left'
+            data-aos-delay='200'
+            data-aos-duration='800'
+            className='space-y-8'
+          >
             <Card className='bg-card/80 backdrop-blur-sm border-border/50 shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-[1.02]'>
               <CardHeader>
                 <CardTitle className='text-2xl font-bold'>
@@ -251,10 +266,7 @@ export function ContactSection() {
                   <a
                     key={item.label}
                     href={item.href}
-                    className='flex items-center space-x-4 p-4 rounded-lg bg-background/50 hover:bg-background/80 transition-all duration-300 hover:scale-[1.05] hover:shadow-lg group border border-transparent hover:border-primary/20 animate-bounce-in'
-                    style={{
-                      animationDelay: `${index * 100}ms`,
-                    }}
+                    className='flex items-center space-x-4 p-4 rounded-lg bg-background/50 hover:bg-background/80 transition-all duration-300 hover:scale-[1.05] hover:shadow-lg group border border-transparent hover:border-primary/20'
                   >
                     <div
                       className={`p-3 rounded-full bg-gradient-to-r ${item.color} bg-opacity-10 group-hover:bg-opacity-20 transition-all duration-300 group-hover:scale-110`}
@@ -318,151 +330,6 @@ export function ContactSection() {
           </div>
         </div>
       </div>
-
-      <style jsx>{`
-        @keyframes float-slow {
-          0%,
-          100% {
-            transform: translateY(0px) rotate(0deg);
-          }
-          50% {
-            transform: translateY(-20px) rotate(180deg);
-          }
-        }
-        @keyframes float-medium {
-          0%,
-          100% {
-            transform: translateY(0px) rotate(0deg);
-          }
-          50% {
-            transform: translateY(-15px) rotate(90deg);
-          }
-        }
-        @keyframes float-fast {
-          0%,
-          100% {
-            transform: translateY(0px) rotate(0deg);
-          }
-          50% {
-            transform: translateY(-10px) rotate(270deg);
-          }
-        }
-        @keyframes pulse-slow {
-          0%,
-          100% {
-            opacity: 0.3;
-            transform: scale(1);
-          }
-          50% {
-            opacity: 0.6;
-            transform: scale(1.1);
-          }
-        }
-        @keyframes pulse-medium {
-          0%,
-          100% {
-            opacity: 0.2;
-            transform: scale(1);
-          }
-          50% {
-            opacity: 0.5;
-            transform: scale(1.05);
-          }
-        }
-        @keyframes fade-in {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        @keyframes slide-up {
-          from {
-            opacity: 0;
-            transform: translateY(100px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        @keyframes scale-in {
-          from {
-            opacity: 0;
-            transform: scale(0);
-          }
-          to {
-            opacity: 1;
-            transform: scale(1);
-          }
-        }
-        @keyframes slide-in-left {
-          from {
-            opacity: 0;
-            transform: translateX(-100px) rotateY(-15deg);
-          }
-          to {
-            opacity: 1;
-            transform: translateX(0) rotateY(0);
-          }
-        }
-        @keyframes slide-in-right {
-          from {
-            opacity: 0;
-            transform: translateX(100px) rotateY(15deg);
-          }
-          to {
-            opacity: 1;
-            transform: translateX(0) rotateY(0);
-          }
-        }
-        @keyframes bounce-in {
-          from {
-            opacity: 0;
-            transform: scale(0);
-          }
-          to {
-            opacity: 1;
-            transform: scale(1);
-          }
-        }
-        .animate-float-slow {
-          animation: float-slow 6s ease-in-out infinite;
-        }
-        .animate-float-medium {
-          animation: float-medium 4s ease-in-out infinite;
-        }
-        .animate-float-fast {
-          animation: float-fast 3s ease-in-out infinite;
-        }
-        .animate-pulse-slow {
-          animation: pulse-slow 4s ease-in-out infinite;
-        }
-        .animate-pulse-medium {
-          animation: pulse-medium 3s ease-in-out infinite;
-        }
-        .animate-fade-in {
-          animation: fade-in 0.5s ease-out;
-        }
-        .animate-slide-up {
-          animation: slide-up 1.2s ease-out;
-        }
-        .animate-scale-in {
-          animation: scale-in 0.8s ease-out;
-        }
-        .animate-slide-in-left {
-          animation: slide-in-left 1s ease-out;
-        }
-        .animate-slide-in-right {
-          animation: slide-in-right 1s ease-out 0.2s both;
-        }
-        .animate-bounce-in {
-          animation: bounce-in 0.8s ease-out;
-        }
-      `}</style>
     </section>
   );
 }
