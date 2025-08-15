@@ -262,7 +262,7 @@ export function ContactSection() {
                 </CardDescription>
               </CardHeader>
               <CardContent className='space-y-6'>
-                {contactInfo.map((item, index) => (
+                {contactInfo.map((item) => (
                   <a
                     key={item.label}
                     href={item.href}

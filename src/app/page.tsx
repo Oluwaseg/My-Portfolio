@@ -12,7 +12,7 @@ import { useRoleContent } from '@/hooks/useRoleContent';
 import Head from 'next/head';
 
 export default function Page() {
-  const { content, roleKey } = useRoleContent();
+  const { content } = useRoleContent();
   
   return (
     <ThemeProvider>
