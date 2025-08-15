@@ -223,7 +223,12 @@ export function HeroSection() {
                 <Button
                   size="lg"
                   className="group relative bg-gradient-to-r from-primary via-blue-600 to-orange-600 hover:from-primary/90 hover:via-blue-600/90 hover:to-orange-600/90 text-white shadow-2xl text-lg px-10 py-7 rounded-2xl transition-all duration-500 hover:scale-105 hover:shadow-primary/30 border-0 overflow-hidden"
-                  onClick={() => scrollToSection("projects")}
+                  onClick={() => {
+                    const projectsSection = document.getElementById('projects');
+                    if (projectsSection) {
+                      projectsSection.scrollIntoView({ behavior: 'smooth' });
+                    }
+                  }}
                 >
                   <span className="relative z-10 flex items-center gap-3">
                     <Play className="h-5 w-5 group-hover:scale-110 transition-transform duration-300" />

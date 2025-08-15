@@ -15,7 +15,7 @@ import { ModeToggle } from './Switch';
 type SectionId = 'hero' | 'about' | 'experience' | 'projects' | 'contact';
 
 export function Navbar() {
-  const { content } = useRoleContent();
+  const { content, roleKey } = useRoleContent();
   const [activeSection, setActiveSection] = useState<SectionId>('hero');
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -199,9 +199,23 @@ export function Navbar() {
                 size='sm'
                 className='hidden md:flex items-center gap-2 bg-background/50 backdrop-blur-sm border-border/50 hover:bg-accent/50 transition-all duration-300 rounded-xl px-4 py-2 group hover:scale-105 hover:shadow-lg relative overflow-hidden'
                 style={getMagneticStyle(resumeRef)}
+                onClick={() => {
+                  const link = document.createElement('a');
+                  if (roleKey === 'frontend') {
+                    link.href = '/resumes/frontend-resume.pdf';
+                  } else if (roleKey === 'backend') {
+                    link.href = '/resumes/backend-resume.pdf';
+                  } else {
+                    link.href = '/resumes/fullstack-resume.pdf';
+                  }
+                  link.download = `${content.resumeText}.pdf`;
+                  document.body.appendChild(link);
+                  link.click();
+                  document.body.removeChild(link);
+                }}
               >
                 <Download className='h-4 w-4 group-hover:scale-110 transition-transform duration-300' />
-                <span>Resume</span>
+                <span>{content.resumeText}</span>
                 <ArrowUpRight className='h-3 w-3 opacity-60 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300' />
                 <div className='absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out' />
               </Button>
@@ -273,9 +287,26 @@ export function Navbar() {
           ))}
         </div>
         <div className='mt-8 pt-8 border-t border-border/50'>
-          <Button className='w-full bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90 text-white rounded-2xl py-6 text-lg font-medium group relative overflow-hidden hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl'>
+          <Button 
+            className='w-full bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90 text-white rounded-2xl py-6 text-lg font-medium group relative overflow-hidden hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl'
+            onClick={() => {
+              // Download role-specific resume
+              const link = document.createElement('a');
+              if (roleKey === 'frontend') {
+                link.href = '/resumes/frontend-resume.pdf';
+              } else if (roleKey === 'backend') {
+                link.href = '/resumes/backend-resume.pdf';
+              } else {
+                link.href = '/resumes/fullstack-resume.pdf';
+              }
+              link.download = `${content.resumeText}.pdf`;
+              document.body.appendChild(link);
+              link.click();
+              document.body.removeChild(link);
+            }}
+          >
             <Download className='mr-2 h-5 w-5 group-hover:scale-110 transition-transform duration-300' />
-            Download Resume
+            Download {content.resumeText}
             <ArrowUpRight className='ml-2 h-4 w-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300' />
             <div className='absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out' />
           </Button>
