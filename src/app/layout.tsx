@@ -92,7 +92,9 @@ export const metadata: Metadata = {
   verification: {
     google: 'Sbn2VOLiuxeaTXI7Xr0wOoObKTqTtFPE4tq0u__gQ-k',
     yandex: '44df016949096fd8',
-    yahoo: '2817FA8E9580ED50CB3A80C6964A30B0',
+    other: {
+      'msvalidate.01': '2817FA8E9580ED50CB3A80C6964A30B0',
+    },
   },
   category: 'technology',
   classification: 'Portfolio',
