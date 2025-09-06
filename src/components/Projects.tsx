@@ -20,6 +20,7 @@ import {
   Filter,
   Github,
   Grid,
+  Info,
   List,
   Star,
   X,
@@ -32,21 +33,20 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 gsap.registerPlugin(ScrollTrigger);
 
 type Project = {
-	_id: string;
-	title: string;
-	description: string;
-	category: string;
-	technologies: string[];
-	githubLink: string;
-	liveLink: string;
-	image?: string;
-	longDescription?: string;
-	featured?: boolean;
-	stats?: { stars: number; forks: number };
+  _id: string;
+  title: string;
+  description: string;
+  category: string;
+  technologies: string[];
+  githubLink: string;
+  liveLink: string;
+  image?: string;
+  longDescription?: string;
+  featured?: boolean;
+  stats?: { stars: number; forks: number };
 };
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
-
 
 const ImageModal = ({
   isOpen,
@@ -87,6 +87,151 @@ const ImageModal = ({
   );
 };
 
+const ProjectDetailsModal = ({
+  isOpen,
+  onClose,
+  project,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  project: Project | null;
+}) => {
+  if (!isOpen || !project) return null;
+
+  return (
+    <div className='fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4'>
+      <div className='relative max-w-4xl max-h-[90vh] w-full bg-card/95 backdrop-blur-xl rounded-xl overflow-hidden shadow-2xl'>
+        <button
+          onClick={onClose}
+          className='absolute top-4 right-4 text-muted-foreground hover:text-primary transition-colors duration-300 z-10 bg-background/80 backdrop-blur-sm rounded-full p-2'
+        >
+          <X className='h-6 w-6' />
+        </button>
+
+        <div className='overflow-y-auto max-h-[90vh]'>
+          {/* Header with image */}
+          <div className='relative h-64 bg-gradient-to-br from-muted to-muted/50 overflow-hidden'>
+            <Image
+              src={
+                project.image ||
+                `/placeholder.svg?height=300&width=800&text=${
+                  encodeURIComponent(project.title) || '/placeholder.svg'
+                }`
+              }
+              alt={project.title}
+              width={800}
+              height={300}
+              className='w-full h-full object-cover'
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.src = `/placeholder.svg?height=300&width=800&text=${encodeURIComponent(
+                  project.title
+                )}`;
+              }}
+            />
+            <div className='absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent' />
+
+            {/* Project stats and featured badge */}
+            <div className='absolute top-4 left-4 flex gap-2'>
+              {project.featured && (
+                <Badge className='bg-gradient-to-r from-primary to-blue-600 text-white border-0 shadow-lg'>
+                  Featured
+                </Badge>
+              )}
+              {project.stats && (
+                <div className='bg-black/80 backdrop-blur-sm rounded-full px-3 py-1 flex items-center gap-2 text-white text-sm'>
+                  <Star className='h-4 w-4 fill-yellow-400 text-yellow-400' />
+                  {project.stats.stars}
+                </div>
+              )}
+            </div>
+
+            {/* Title overlay */}
+            <div className='absolute bottom-4 left-4 right-16'>
+              <h2 className='text-3xl font-bold text-white mb-2'>
+                {project.title}
+              </h2>
+              <Badge
+                variant='secondary'
+                className='bg-background/80 text-foreground'
+              >
+                {project.category}
+              </Badge>
+            </div>
+          </div>
+
+          {/* Content */}
+          <div className='p-6 space-y-6'>
+            {/* Description */}
+            <div>
+              <h3 className='text-xl font-semibold mb-3 text-primary'>
+                About This Project
+              </h3>
+              <p className='text-muted-foreground leading-relaxed mb-4'>
+                {project.description}
+              </p>
+              {project.longDescription && (
+                <p className='text-foreground leading-relaxed'>
+                  {project.longDescription}
+                </p>
+              )}
+            </div>
+
+            {/* Technologies */}
+            <div>
+              <h3 className='text-xl font-semibold mb-3 text-primary'>
+                Technologies Used
+              </h3>
+              <div className='flex flex-wrap gap-2'>
+                {project.technologies
+                  .flatMap((tech) => tech.split(',').map((item) => item.trim()))
+                  .map((tech, techIndex) => (
+                    <Badge
+                      key={techIndex}
+                      variant='outline'
+                      className='px-3 py-1 bg-secondary/50 hover:bg-gradient-to-r hover:from-primary/20 hover:to-blue-500/20 transition-all duration-300 border-primary/20'
+                    >
+                      {tech}
+                    </Badge>
+                  ))}
+              </div>
+            </div>
+
+            {/* Action buttons */}
+            <div className='flex flex-col sm:flex-row gap-4 pt-4 border-t border-border'>
+              <Link
+                href={project.liveLink}
+                target='_blank'
+                rel='noopener noreferrer'
+                className='flex-1'
+              >
+                <Button className='w-full bg-gradient-to-r from-primary to-blue-600 hover:from-primary/80 hover:to-blue-600/80 shadow-lg hover:shadow-xl transition-all duration-300'>
+                  <ExternalLink className='h-4 w-4 mr-2' />
+                  View Live Demo
+                </Button>
+              </Link>
+              <Link
+                href={project.githubLink}
+                target='_blank'
+                rel='noopener noreferrer'
+                className='flex-1'
+              >
+                <Button
+                  variant='outline'
+                  className='w-full bg-transparent hover:bg-gradient-to-r hover:from-primary/10 hover:to-blue-500/10 border-primary/30 hover:border-primary transition-all duration-300'
+                >
+                  <Github className='h-4 w-4 mr-2' />
+                  View Source Code
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export function ProjectsSection() {
   const sectionRef = useRef(null);
   const titleRef = useRef(null);
@@ -102,6 +247,7 @@ export function ProjectsSection() {
     src: string;
     title: string;
   } | null>(null);
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
   const handleMouseMove = useCallback((e: MouseEvent) => {
     mouseRef.current = { x: e.clientX, y: e.clientY };
@@ -239,6 +385,14 @@ export function ProjectsSection() {
 
   const closeImageModal = () => {
     setModalImage(null);
+  };
+
+  const openProjectDetails = (project: Project) => {
+    setSelectedProject(project);
+  };
+
+  const closeProjectDetails = () => {
+    setSelectedProject(null);
   };
 
   if (loading) {
@@ -381,7 +535,7 @@ export function ProjectsSection() {
               <h3 className='text-3xl font-bold mb-4 bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent'>
                 ⭐ Featured Projects
               </h3>
-              <div className='w-20 h-1 bg-gradient-to-r from-primary to-blue-600 mx-auto rounded-full' />
+              <div className='w-20 h-1 bg-gradient-to-r from-primary to-blue-500 mx-auto rounded-full' />
             </div>
 
             <div
@@ -433,6 +587,12 @@ export function ProjectsSection() {
                         height={400}
                         className='w-full h-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:rotate-1'
                         priority={index < 2}
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.src = `/placeholder.svg?height=400&width=600&text=${encodeURIComponent(
+                            project.title
+                          )}`;
+                        }}
                       />
 
                       <div className='absolute inset-0 bg-black/40 opacity-0 group-hover/image:opacity-100 transition-opacity duration-300 flex items-center justify-center'>
@@ -459,7 +619,10 @@ export function ProjectsSection() {
                     </div>
 
                     <CardHeader className='pb-4'>
-                      <CardTitle className='text-3xl font-bold group-hover:text-primary transition-all duration-300 group-hover:scale-105 origin-left'>
+                      <CardTitle
+                        className='text-3xl font-bold group-hover:text-primary transition-all duration-300 group-hover:scale-105 origin-left cursor-pointer'
+                        onClick={() => openProjectDetails(project)}
+                      >
                         {project.title}
                       </CardTitle>
                       <CardDescription className='text-lg leading-relaxed text-muted-foreground group-hover:text-foreground transition-colors duration-300'>
@@ -491,29 +654,40 @@ export function ProjectsSection() {
                     </CardContent>
 
                     <CardFooter className='flex justify-between pt-0'>
-                      <Link
-                        href={project.liveLink}
-                        target='_blank'
-                        rel='noopener noreferrer'
-                      >
-                        <Button className='group/btn bg-gradient-to-r from-primary to-blue-600 hover:from-primary/80 hover:to-blue-600/80 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105'>
-                          <ExternalLink className='h-4 w-4 mr-2 group-hover/btn:rotate-12 group-hover/btn:scale-110 transition-transform duration-300' />
-                          Live Demo
-                        </Button>
-                      </Link>
-                      <Link
-                        href={project.githubLink}
-                        target='_blank'
-                        rel='noopener noreferrer'
-                      >
-                        <Button
-                          variant='outline'
-                          className='group/btn bg-transparent hover:bg-gradient-to-r hover:from-primary/10 hover:to-blue-500/10 border-primary/30 hover:border-primary transition-all duration-300 hover:scale-105'
+                      <div className='flex gap-2'>
+                        <Link
+                          href={project.liveLink}
+                          target='_blank'
+                          rel='noopener noreferrer'
                         >
-                          <Github className='h-4 w-4 mr-2 group-hover/btn:rotate-12 group-hover/btn:scale-110 transition-transform duration-300' />
-                          Source Code
-                        </Button>
-                      </Link>
+                          <Button className='group/btn bg-gradient-to-r from-primary to-blue-600 hover:from-primary/80 hover:to-blue-600/80 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105'>
+                            <ExternalLink className='h-4 w-4 mr-2 group-hover/btn:rotate-12 group-hover/btn:scale-110 transition-transform duration-300' />
+                            Live Demo
+                          </Button>
+                        </Link>
+                        <Link
+                          href={project.githubLink}
+                          target='_blank'
+                          rel='noopener noreferrer'
+                        >
+                          <Button
+                            variant='outline'
+                            className='group/btn bg-transparent hover:bg-gradient-to-r hover:from-primary/10 hover:to-blue-500/10 border-primary/30 hover:border-primary transition-all duration-300 hover:scale-105'
+                          >
+                            <Github className='h-4 w-4 mr-2 group-hover/btn:rotate-12 group-hover/btn:scale-110 transition-transform duration-300' />
+                            Source Code
+                          </Button>
+                        </Link>
+                      </div>
+                      <Button
+                        variant='ghost'
+                        size='sm'
+                        onClick={() => openProjectDetails(project)}
+                        className='group/btn hover:bg-primary/10 transition-all duration-300 hover:scale-105'
+                      >
+                        <Info className='h-4 w-4 mr-2 group-hover/btn:rotate-12 group-hover/btn:scale-110 transition-transform duration-300' />
+                        Details
+                      </Button>
                     </CardFooter>
                   </div>
                 </Card>
@@ -552,8 +726,8 @@ export function ProjectsSection() {
                   }
                   onMouseLeave={handleCardLeave}
                 >
-                                  <div className='absolute inset-0 bg-gradient-to-r from-primary/30 via-blue-500/30 to-purple-500/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-sm' />
-                <div className='absolute inset-[1px] bg-card/90 backdrop-blur-lg rounded-lg' />
+                  <div className='absolute inset-0 bg-gradient-to-r from-primary/30 via-blue-500/30 to-purple-500/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-sm' />
+                  <div className='absolute inset-[1px] bg-card/90 backdrop-blur-lg rounded-lg' />
 
                   <div className='relative z-10'>
                     <div
@@ -580,6 +754,12 @@ export function ProjectsSection() {
                         width={400}
                         height={250}
                         className='w-full h-full object-cover transition-all duration-500 group-hover:scale-110'
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.src = `/placeholder.svg?height=250&width=400&text=${encodeURIComponent(
+                            project.title
+                          )}`;
+                        }}
                       />
 
                       <div className='absolute inset-0 bg-black/40 opacity-0 group-hover/image:opacity-100 transition-opacity duration-300 flex items-center justify-center'>
@@ -597,7 +777,10 @@ export function ProjectsSection() {
                     </div>
 
                     <CardHeader className='pb-3'>
-                      <CardTitle className='text-xl font-semibold group-hover:text-primary transition-colors duration-300'>
+                      <CardTitle
+                        className='text-xl font-semibold group-hover:text-primary transition-colors duration-300 cursor-pointer'
+                        onClick={() => openProjectDetails(project)}
+                      >
                         {project.title}
                       </CardTitle>
                       <CardDescription className='text-sm line-clamp-2'>
@@ -638,34 +821,45 @@ export function ProjectsSection() {
                     </CardContent>
 
                     <CardFooter className='flex justify-between pt-0'>
-                      <Link
-                        href={project.liveLink}
-                        target='_blank'
-                        rel='noopener noreferrer'
-                      >
-                        <Button
-                          variant='outline'
-                          size='sm'
-                          className='text-xs bg-transparent hover:bg-primary/10 transition-all duration-300 hover:scale-105'
+                      <div className='flex gap-1'>
+                        <Link
+                          href={project.liveLink}
+                          target='_blank'
+                          rel='noopener noreferrer'
                         >
-                          <ExternalLink className='h-3 w-3 mr-1' />
-                          Demo
-                        </Button>
-                      </Link>
-                      <Link
-                        href={project.githubLink}
-                        target='_blank'
-                        rel='noopener noreferrer'
-                      >
-                        <Button
-                          variant='ghost'
-                          size='sm'
-                          className='text-xs hover:bg-primary/10 transition-all duration-300 hover:scale-105'
+                          <Button
+                            variant='outline'
+                            size='sm'
+                            className='text-xs bg-transparent hover:bg-primary/10 transition-all duration-300 hover:scale-105'
+                          >
+                            <ExternalLink className='h-3 w-3 mr-1' />
+                            Demo
+                          </Button>
+                        </Link>
+                        <Link
+                          href={project.githubLink}
+                          target='_blank'
+                          rel='noopener noreferrer'
                         >
-                          <Github className='h-3 w-3 mr-1' />
-                          Code
-                        </Button>
-                      </Link>
+                          <Button
+                            variant='ghost'
+                            size='sm'
+                            className='text-xs hover:bg-primary/10 transition-all duration-300 hover:scale-105'
+                          >
+                            <Github className='h-3 w-3 mr-1' />
+                            Code
+                          </Button>
+                        </Link>
+                      </div>
+                      <Button
+                        variant='ghost'
+                        size='sm'
+                        onClick={() => openProjectDetails(project)}
+                        className='text-xs hover:bg-primary/10 transition-all duration-300 hover:scale-105'
+                      >
+                        <Info className='h-3 w-3 mr-1' />
+                        Details
+                      </Button>
                     </CardFooter>
                   </div>
                 </Card>
@@ -695,6 +889,12 @@ export function ProjectsSection() {
         onClose={closeImageModal}
         imageSrc={modalImage?.src || ''}
         title={modalImage?.title || ''}
+      />
+
+      <ProjectDetailsModal
+        isOpen={selectedProject !== null}
+        onClose={closeProjectDetails}
+        project={selectedProject}
       />
 
       <style jsx>{`

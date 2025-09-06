@@ -11,9 +11,12 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import emailjs from '@emailjs/browser';
 import {
+  AlertCircle,
   CheckCircle,
   Code,
+  Loader2,
   Mail,
   MapPin,
   Phone,
@@ -27,11 +30,92 @@ import { useState } from 'react';
 export function ContactSection() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [focusedField, setFocusedField] = useState<string | null>(null);
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    subject: '',
+    message: '',
+  });
+  const [isLoading, setIsLoading] = useState(false);
+  const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [statusMessage, setStatusMessage] = useState('');
 
-  const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
-    setIsSubmitted(true);
-    setTimeout(() => setIsSubmitted(false), 3000);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setStatus('idle');
+
+    try {
+      const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
+      const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
+      const autoReplyTemplateId =
+        process.env.NEXT_PUBLIC_EMAILJS_AUTO_REPLY_TEMPLATE_ID ||
+        'template_24krlbk';
+      const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
+
+      if (!serviceId || !templateId || !publicKey) {
+        throw new Error(
+          'EmailJS configuration is missing. Please check your environment variables.'
+        );
+      }
+
+      const templateParams = {
+        from_name: `${formData.firstName} ${formData.lastName}`.trim(),
+        from_email: formData.email,
+        subject: formData.subject,
+        message: formData.message,
+        to_name: 'Samuel Oluwasegun',
+      };
+
+      const autoReplyParams = {
+        to_name: `${formData.firstName} ${formData.lastName}`.trim(),
+        to_email: formData.email,
+        from_name: 'Samuel Oluwasegun',
+        reply_to: 'samueloluwasegun999@gmail.com',
+      };
+
+      try {
+        await emailjs.send(serviceId, templateId, templateParams, publicKey);
+      } catch (mainEmailError) {
+        throw new Error(
+          'Failed to send main email: ' +
+            (mainEmailError instanceof Error
+              ? mainEmailError.message
+              : String(mainEmailError))
+        );
+      }
+
+      try {
+        await emailjs.send(
+          serviceId,
+          autoReplyTemplateId,
+          autoReplyParams,
+          publicKey
+        );
+      } catch {}
+
+      setStatus('success');
+      setStatusMessage(
+        "Message sent successfully! You'll receive a confirmation email shortly."
+      );
+      setFormData({
+        firstName: '',
+        lastName: '',
+        email: '',
+        subject: '',
+        message: '',
+      });
+      setIsSubmitted(true);
+      setTimeout(() => setIsSubmitted(false), 3000);
+    } catch {
+      setStatus('error');
+      setStatusMessage(
+        'Failed to send message. Please try again or contact me directly.'
+      );
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const contactInfo = [
@@ -63,16 +147,13 @@ export function ContactSection() {
       id='contact'
       className='min-h-screen w-full bg-gradient-to-br from-background via-muted/20 to-background py-20 px-4 md:px-8 relative overflow-hidden'
     >
-      {/* Enhanced Floating Background Elements */}
       <div className='absolute inset-0'>
-        {/* Floating Particles */}
         <div className='absolute top-20 left-10 w-4 h-4 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full blur-sm animate-float-slow opacity-60' />
         <div className='absolute top-40 right-20 w-6 h-6 bg-gradient-to-r from-pink-500 to-orange-500 rounded-full blur-sm animate-float-medium opacity-50' />
         <div className='absolute bottom-40 left-1/4 w-3 h-3 bg-gradient-to-r from-green-500 to-blue-500 rounded-full blur-sm animate-float-fast opacity-70' />
         <div className='absolute top-1/3 right-1/3 w-5 h-5 bg-gradient-to-r from-yellow-500 to-red-500 rounded-full blur-sm animate-float-slow opacity-40' />
         <div className='absolute bottom-20 right-10 w-4 h-4 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full blur-sm animate-float-medium opacity-60' />
 
-        {/* Floating Icons */}
         <div className='absolute top-32 left-1/3 text-primary/20 animate-float-slow'>
           <Sparkles className='h-8 w-8' />
         </div>
@@ -83,11 +164,9 @@ export function ContactSection() {
           <Code className='h-6 w-6' />
         </div>
 
-        {/* Animated Gradient Orbs */}
         <div className='absolute top-1/4 left-1/3 w-96 h-96 bg-gradient-to-r from-primary/10 to-blue-500/10 rounded-full blur-3xl animate-pulse-slow' />
         <div className='absolute bottom-1/4 right-1/3 w-72 h-72 bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded-full blur-3xl animate-pulse-medium' />
 
-        {/* Grid Pattern */}
         <div className='absolute inset-0 bg-grid-white/[0.02] bg-[size:50px_50px]' />
       </div>
 
@@ -109,7 +188,6 @@ export function ContactSection() {
         </div>
 
         <div className='grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-5xl mx-auto'>
-          {/* Enhanced Contact Form */}
           <Card
             data-aos='fade-right'
             data-aos-delay='200'
@@ -141,6 +219,13 @@ export function ContactSection() {
                         type='text'
                         placeholder='John'
                         required
+                        value={formData.firstName}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            firstName: e.target.value,
+                          })
+                        }
                         onFocus={() => setFocusedField('firstName')}
                         onBlur={() => setFocusedField(null)}
                         className={`h-12 bg-background/50 border-border/50 transition-all duration-300 ${
@@ -159,6 +244,10 @@ export function ContactSection() {
                         type='text'
                         placeholder='Doe'
                         required
+                        value={formData.lastName}
+                        onChange={(e) =>
+                          setFormData({ ...formData, lastName: e.target.value })
+                        }
                         onFocus={() => setFocusedField('lastName')}
                         onBlur={() => setFocusedField(null)}
                         className={`h-12 bg-background/50 border-border/50 transition-all duration-300 ${
@@ -178,6 +267,10 @@ export function ContactSection() {
                       type='email'
                       placeholder='john@example.com'
                       required
+                      value={formData.email}
+                      onChange={(e) =>
+                        setFormData({ ...formData, email: e.target.value })
+                      }
                       onFocus={() => setFocusedField('email')}
                       onBlur={() => setFocusedField(null)}
                       className={`h-12 bg-background/50 border-border/50 transition-all duration-300 ${
@@ -196,6 +289,10 @@ export function ContactSection() {
                       type='text'
                       placeholder='Project Discussion'
                       required
+                      value={formData.subject}
+                      onChange={(e) =>
+                        setFormData({ ...formData, subject: e.target.value })
+                      }
                       onFocus={() => setFocusedField('subject')}
                       onBlur={() => setFocusedField(null)}
                       className={`h-12 bg-background/50 border-border/50 transition-all duration-300 ${
@@ -214,6 +311,10 @@ export function ContactSection() {
                       placeholder='Tell me about your project...'
                       rows={6}
                       required
+                      value={formData.message}
+                      onChange={(e) =>
+                        setFormData({ ...formData, message: e.target.value })
+                      }
                       onFocus={() => setFocusedField('message')}
                       onBlur={() => setFocusedField(null)}
                       className={`bg-background/50 border-border/50 transition-all duration-300 resize-none ${
@@ -223,12 +324,44 @@ export function ContactSection() {
                       }`}
                     />
                   </div>
+
+                  {status !== 'idle' && (
+                    <div
+                      className={`flex items-center space-x-2 p-3 rounded-lg ${
+                        status === 'success'
+                          ? 'bg-green-500/10 text-green-600 border border-green-500/20'
+                          : 'bg-red-500/10 text-red-600 border border-red-500/20'
+                      }`}
+                    >
+                      {status === 'success' ? (
+                        <CheckCircle className='w-5 h-5' />
+                      ) : (
+                        <AlertCircle className='w-5 h-5' />
+                      )}
+                      <span className='text-sm'>{statusMessage}</span>
+                    </div>
+                  )}
+
                   <Button
                     type='submit'
-                    className='w-full h-12 text-lg bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90 transition-all duration-300 hover:scale-[1.05] hover:shadow-lg hover:shadow-primary/30 group'
+                    disabled={isLoading}
+                    className={`w-full h-12 text-lg transition-all duration-300 hover:scale-[1.05] hover:shadow-lg hover:shadow-primary/30 group ${
+                      isLoading
+                        ? 'bg-muted cursor-not-allowed'
+                        : 'bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90'
+                    }`}
                   >
-                    <Send className='h-5 w-5 mr-2 group-hover:translate-x-1 transition-transform duration-300' />
-                    Send Message
+                    {isLoading ? (
+                      <div className='flex items-center justify-center space-x-2'>
+                        <Loader2 className='h-5 w-5 animate-spin' />
+                        <span>Sending...</span>
+                      </div>
+                    ) : (
+                      <>
+                        <Send className='h-5 w-5 mr-2 group-hover:translate-x-1 transition-transform duration-300' />
+                        Send Message
+                      </>
+                    )}
                   </Button>
                 </form>
               ) : (
@@ -245,7 +378,6 @@ export function ContactSection() {
             </CardContent>
           </Card>
 
-          {/* Enhanced Contact Information */}
           <div
             data-aos='fade-left'
             data-aos-delay='200'
@@ -310,10 +442,10 @@ export function ContactSection() {
                   </div>
                   <div className='text-center group/stat hover:scale-110 transition-transform duration-300'>
                     <div className='text-3xl font-bold text-primary group-hover/stat:text-green-600 transition-colors duration-300'>
-                      5+
+                      5+ Years
                     </div>
                     <div className='text-sm text-muted-foreground group-hover/stat:text-foreground transition-colors duration-300'>
-                      Years
+                      Experience
                     </div>
                   </div>
                   <div className='text-center group/stat hover:scale-110 transition-transform duration-300'>
