@@ -1,327 +1,329 @@
 'use client';
-import { useLenis } from '@/components/SmoothScrollProvider';
+
+import { Logo } from '@/assets';
 import { Button } from '@/components/ui/button';
-import { roleContent, RoleKey } from '@/config/roleContent';
+import { useRoleContent } from '@/hooks/useRoleContent';
 import { cn } from '@/lib/utils';
-import { ArrowUpRight, Download, Menu, X } from 'lucide-react';
+import { ArrowUpRight, Download } from 'lucide-react';
 import Image from 'next/image';
-import type React from 'react';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { ModeToggle } from './Switch';
+import { useCallback, useEffect, useState } from 'react';
 
 type SectionId = 'hero' | 'about' | 'experience' | 'projects' | 'contact';
 
-interface NavbarProps {
-  content: (typeof roleContent)[RoleKey];
-  roleKey: RoleKey;
-}
+const sections: { id: SectionId; label: string }[] = [
+  { id: 'about', label: 'About' },
+  { id: 'experience', label: 'Experience' },
+  { id: 'projects', label: 'Work' },
+  { id: 'contact', label: 'Contact' },
+];
 
-export function Navbar({ content, roleKey }: NavbarProps) {
+export function Navbar() {
+  const { content, roleKey } = useRoleContent();
   const [activeSection, setActiveSection] = useState<SectionId>('hero');
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const lenis = useLenis();
-  const navRef = useRef<HTMLElement>(null);
-  const logoRef = useRef<HTMLAnchorElement>(
-    null
-  ) as React.RefObject<HTMLAnchorElement>;
-  const resumeRef = useRef<HTMLButtonElement>(
-    null
-  ) as React.RefObject<HTMLButtonElement>;
-  const themeToggleRef = useRef<HTMLDivElement>(
-    null
-  ) as React.RefObject<HTMLDivElement>;
+  const [hoveredLink, setHoveredLink] = useState<string | null>(null);
 
-  const sections: { id: SectionId; name: string; number: string }[] = useMemo(
-    () => [
-      { id: 'hero', name: 'Home', number: '01' },
-      { id: 'about', name: 'About', number: '02' },
-      { id: 'experience', name: 'Experience', number: '03' },
-      { id: 'projects', name: 'Work', number: '04' },
-      { id: 'contact', name: 'Contact', number: '05' },
-    ],
-    []
-  );
+  const resumeHref =
+    roleKey === 'frontend'
+      ? '/resumes/frontend-resume.pdf'
+      : roleKey === 'backend'
+      ? '/resumes/backend-resume.pdf'
+      : '/resumes/fullstack-resume.pdf';
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-      const scrollPosition = window.scrollY + 100;
+      setIsScrolled(window.scrollY > 20);
 
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const section = document.getElementById(sections[i].id);
+      const scrollPosition = window.scrollY + 150;
+      const allSections: SectionId[] = ['hero', ...sections.map((s) => s.id)];
+
+      for (let i = allSections.length - 1; i >= 0; i--) {
+        const section = document.getElementById(allSections[i]);
         if (section && section.offsetTop <= scrollPosition) {
-          setActiveSection(sections[i].id);
+          setActiveSection(allSections[i]);
           break;
         }
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, [sections]);
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-    };
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-    };
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const scrollToSection = (id: SectionId) => {
-    setIsMobileMenuOpen(false);
-
-    if (lenis) {
-      lenis.scrollTo(`#${id}`, { offset: -80, duration: 1.5 });
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
     } else {
-      const element = document.getElementById(id);
-      if (element) {
-        const offsetTop = element.offsetTop - 80;
-        window.scrollTo({
-          top: offsetTop,
-          behavior: 'smooth',
-        });
-      }
+      document.body.style.overflow = '';
     }
-  };
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isMobileMenuOpen]);
 
-  const getMagneticStyle = (elementRef: React.RefObject<HTMLElement>) => {
-    if (!elementRef.current) return {};
-
-    const rect = elementRef.current.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-
-    const deltaX = mousePosition.x - centerX;
-    const deltaY = mousePosition.y - centerY;
-    const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-
-    if (distance < 100) {
-      const strength = (100 - distance) / 100;
-      return {
-        transform: `translate(${deltaX * strength * 0.1}px, ${
-          deltaY * strength * 0.1
-        }px)`,
-      };
+  const scrollToSection = useCallback((id: SectionId) => {
+    setIsMobileMenuOpen(false);
+    const element = document.getElementById(id);
+    if (element) {
+      const offset = 80;
+      const top = element.offsetTop - offset;
+      window.scrollTo({ top, behavior: 'smooth' });
     }
-    return {};
+  }, []);
+
+  const handleDownload = () => {
+    const link = document.createElement('a');
+    link.href = resumeHref;
+    link.download = `${content.resumeText}.pdf`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   return (
     <>
-      <nav
-        ref={navRef}
+      {/* Main Navbar */}
+      <header
         className={cn(
-          'fixed top-0 left-0 right-0 z-50 transition-all duration-700 ease-out',
+          'fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out',
           isScrolled
-            ? 'bg-background/80 backdrop-blur-2xl shadow-2xl border-b border-border/20'
-            : 'bg-transparent backdrop-blur-sm'
+            ? 'py-3 bg-background/60 backdrop-blur-xl border-b border-border/50'
+            : 'py-5 bg-transparent'
         )}
       >
-        <div className='container mx-auto max-w-7xl px-6 lg:px-8'>
-          <div className='flex items-center justify-between h-20'>
-            <a
-              ref={logoRef}
-              href='#hero'
-              className='group relative flex items-center space-x-3'
-              onClick={(e) => {
-                e.preventDefault();
-                scrollToSection('hero');
-              }}
-              style={getMagneticStyle(logoRef)}
-            >
+        <nav className='container mx-auto max-w-6xl px-6'>
+          <div className='flex items-center justify-between'>
+            {/* Logo & Name */}
+            <a className='group flex items-center gap-3 animate-nav-slide-in'>
               <div className='relative'>
-                <div className='relative overflow-hidden rounded-xl'>
+                <div className='w-10 h-10 rounded-lg overflow-hidden bg-secondary/50 flex items-center justify-center transition-transform duration-300 group-hover:scale-105'>
                   <Image
-                    src={'/logo.png'}
-                    alt='logo'
+                    src={Logo}
+                    alt='Logo'
                     width={40}
-                    height={60}
+                    height={40}
+                    className='object-cover'
                     unoptimized
-                    className='transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3'
                   />
                 </div>
-                <div className='absolute inset-0 bg-gradient-to-br from-primary via-blue-500 to-orange-500 rounded-xl blur-lg opacity-0 group-hover:opacity-40 transition-all duration-500 scale-150' />
+                {/* Glow effect on hover */}
+                <div className='absolute inset-0 rounded-lg bg-primary/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10' />
               </div>
               <div className='hidden sm:block'>
-                <div className='text-xl font-black bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent group-hover:from-primary group-hover:to-purple-500 transition-all duration-500'>
-                  Samuel Oluwasegun
-                </div>
-                <div className='text-xs text-muted-foreground font-medium tracking-wider uppercase group-hover:text-primary/70 transition-colors duration-300'>
+                <p className='text-sm font-semibold text-foreground tracking-tight leading-none'>
+                  SOSTECH
+                </p>
+                <p className='text-xs text-muted-foreground mt-0.5'>
                   {content.roleBadge}
-                </div>
+                </p>
               </div>
             </a>
 
-            <div className='hidden lg:flex items-center'>
-              <div className='flex items-center space-x-1 bg-background/50 backdrop-blur-sm rounded-2xl p-2 border border-border/30 shadow-lg'>
-                {sections.map((section) => (
-                  <a
-                    key={section.id}
-                    href={`#${section.id}`}
+            {/* Desktop Navigation - Centered */}
+            <div
+              className='hidden lg:flex items-center gap-1 animate-nav-slide-in'
+              style={{ animationDelay: '100ms' }}
+            >
+              {sections.map((section, index) => (
+                <a
+                  key={section.id}
+                  href={`#${section.id}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    scrollToSection(section.id);
+                  }}
+                  onMouseEnter={() => setHoveredLink(section.id)}
+                  onMouseLeave={() => setHoveredLink(null)}
+                  className={cn(
+                    'relative px-4 py-2 text-sm font-medium transition-all duration-300 rounded-lg',
+                    activeSection === section.id
+                      ? 'text-primary'
+                      : 'text-muted-foreground hover:text-foreground'
+                  )}
+                  style={{ animationDelay: `${(index + 1) * 50}ms` }}
+                >
+                  <span className='relative z-10'>{section.label}</span>
+
+                  {/* Active indicator line */}
+                  <span
                     className={cn(
-                      'relative text-sm font-medium transition-all duration-300 px-4 py-2 rounded-xl group overflow-hidden inline-flex items-center space-x-2 no-underline',
-                      activeSection === section.id
-                        ? 'text-primary bg-primary/10 shadow-lg shadow-primary/10'
-                        : 'text-muted-foreground hover:text-foreground hover:bg-accent/50 hover:scale-105'
+                      'absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 bg-primary rounded-full transition-all duration-300',
+                      activeSection === section.id ? 'w-4' : 'w-0'
                     )}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      scrollToSection(section.id);
-                    }}
-                  >
-                    <span className='relative z-10 flex items-center space-x-2'>
-                      <span className='text-xs opacity-60 font-mono transition-all duration-300 group-hover:opacity-100'>
-                        {section.number}
-                      </span>
-                      <span className='transition-all duration-300 group-hover:translate-x-0.5'>
-                        {section.name}
-                      </span>
-                    </span>
-                    {activeSection === section.id && (
-                      <div className='absolute inset-0 bg-gradient-to-r from-primary/10 via-blue-500/10 to-orange-500/10 rounded-xl animate-pulse' />
+                  />
+
+                  {/* Hover background */}
+                  <span
+                    className={cn(
+                      'absolute inset-0 rounded-lg bg-secondary/50 transition-all duration-300',
+                      hoveredLink === section.id && activeSection !== section.id
+                        ? 'opacity-100 scale-100'
+                        : 'opacity-0 scale-95'
                     )}
-                    <div className='absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out' />
-                  </a>
-                ))}
-              </div>
+                  />
+                </a>
+              ))}
             </div>
 
-            <div className='flex items-center space-x-3'>
-              <div
-                ref={themeToggleRef}
-                style={getMagneticStyle(themeToggleRef)}
-              >
-                <ModeToggle />
-              </div>
+            {/* Right Section - Resume Button */}
+            <div
+              className='flex items-center gap-3 animate-nav-slide-in'
+              style={{ animationDelay: '200ms' }}
+            >
               <Button
-                ref={resumeRef}
-                variant='outline'
+                variant='ghost'
                 size='sm'
-                className='hidden md:flex items-center gap-2 bg-background/50 backdrop-blur-sm border-border/50 hover:bg-accent/50 transition-all duration-300 rounded-xl px-4 py-2 group hover:scale-105 hover:shadow-lg relative overflow-hidden'
-                style={getMagneticStyle(resumeRef)}
-                onClick={() => {
-                  const link = document.createElement('a');
-                  if (roleKey === 'frontend') {
-                    link.href = '/resumes/frontend-resume.pdf';
-                  } else if (roleKey === 'backend') {
-                    link.href = '/resumes/backend-resume.pdf';
-                  } else {
-                    link.href = '/resumes/fullstack-resume.pdf';
-                  }
-                  link.download = `${content.resumeText}.pdf`;
-                  document.body.appendChild(link);
-                  link.click();
-                  document.body.removeChild(link);
-                }}
+                onClick={handleDownload}
+                className='hidden md:flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-secondary/50 transition-all duration-300 group'
               >
-                <Download className='h-4 w-4 group-hover:scale-110 transition-transform duration-300' />
+                <Download className='w-4 h-4 transition-transform duration-300 group-hover:-translate-y-0.5' />
                 <span>{content.resumeText}</span>
-                <ArrowUpRight className='h-3 w-3 opacity-60 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300' />
-                <div className='absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out' />
+                <ArrowUpRight className='w-3 h-3 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300' />
               </Button>
+
+              {/* Mobile Menu Toggle */}
               <Button
                 variant='ghost'
                 size='icon'
-                className='lg:hidden rounded-xl hover:scale-110 transition-all duration-300'
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className='lg:hidden w-10 h-10 rounded-lg hover:bg-secondary/50 transition-all duration-300'
+                aria-label='Toggle menu'
               >
-                <div className='relative'>
-                  <Menu
+                <div className='relative w-5 h-5'>
+                  <span
                     className={cn(
-                      'h-6 w-6 transition-all duration-300',
+                      'absolute left-0 w-5 h-0.5 bg-foreground rounded-full transition-all duration-300',
                       isMobileMenuOpen
-                        ? 'rotate-90 scale-0'
-                        : 'rotate-0 scale-100'
+                        ? 'top-[9px] rotate-45'
+                        : 'top-1 rotate-0'
                     )}
                   />
-                  <X
+                  <span
                     className={cn(
-                      'absolute inset-0 h-6 w-6 transition-all duration-300',
+                      'absolute left-0 top-[9px] w-5 h-0.5 bg-foreground rounded-full transition-all duration-300',
                       isMobileMenuOpen
-                        ? 'rotate-0 scale-100'
-                        : '-rotate-90 scale-0'
+                        ? 'opacity-0 scale-0'
+                        : 'opacity-100 scale-100'
+                    )}
+                  />
+                  <span
+                    className={cn(
+                      'absolute left-0 w-5 h-0.5 bg-foreground rounded-full transition-all duration-300',
+                      isMobileMenuOpen
+                        ? 'top-[9px] -rotate-45'
+                        : 'top-[17px] rotate-0'
                     )}
                   />
                 </div>
               </Button>
             </div>
           </div>
-        </div>
-      </nav>
+        </nav>
+      </header>
 
+      {/* Mobile Menu Overlay */}
       <div
         className={cn(
-          'fixed top-20 left-0 right-0 z-40 lg:hidden transition-all duration-500 ease-in-out',
-          isMobileMenuOpen
-            ? 'translate-y-0 opacity-100'
-            : '-translate-y-full opacity-0',
-          'h-[calc(100vh-80px)] overflow-y-auto bg-background/95 backdrop-blur-2xl p-8 border-b border-border/20'
+          'fixed inset-0 z-40 lg:hidden transition-all duration-500',
+          isMobileMenuOpen ? 'pointer-events-auto' : 'pointer-events-none'
         )}
       >
-        <div className='space-y-2'>
-          {sections.map((section, index) => (
-            <a
-              key={section.id}
-              href={`#${section.id}`}
+        {/* Backdrop */}
+        <div
+          className={cn(
+            'absolute inset-0 bg-background/80 backdrop-blur-xl transition-opacity duration-500',
+            isMobileMenuOpen ? 'opacity-100' : 'opacity-0'
+          )}
+          onClick={() => setIsMobileMenuOpen(false)}
+        />
+
+        {/* Menu Panel */}
+        <div
+          className={cn(
+            'absolute top-0 right-0 h-full w-full max-w-sm bg-background border-l border-border/50 transition-transform duration-500 ease-out',
+            isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
+          )}
+        >
+          <div className='flex flex-col h-full pt-24 px-8 pb-8'>
+            {/* Navigation Links */}
+            <nav className='flex-1'>
+              <div className='space-y-2'>
+                {sections.map((section, index) => (
+                  <a
+                    key={section.id}
+                    href={`#${section.id}`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      scrollToSection(section.id);
+                    }}
+                    className={cn(
+                      'group flex items-center justify-between py-4 px-4 rounded-xl transition-all duration-300',
+                      activeSection === section.id
+                        ? 'bg-primary/10 text-primary'
+                        : 'text-muted-foreground hover:text-foreground hover:bg-secondary/50',
+                      isMobileMenuOpen ? 'animate-menu-slide' : ''
+                    )}
+                    style={{ animationDelay: `${index * 80}ms` }}
+                  >
+                    <span className='text-lg font-medium'>{section.label}</span>
+                    <ArrowUpRight
+                      className={cn(
+                        'w-4 h-4 transition-all duration-300',
+                        activeSection === section.id
+                          ? 'opacity-100'
+                          : 'opacity-0 group-hover:opacity-100 translate-x-1 group-hover:translate-x-0'
+                      )}
+                    />
+                  </a>
+                ))}
+              </div>
+            </nav>
+
+            {/* Bottom Section */}
+            <div
               className={cn(
-                'w-full justify-start text-lg font-medium py-6 rounded-2xl transition-all duration-300 group relative overflow-hidden flex items-start no-underline',
-                activeSection === section.id
-                  ? 'text-primary bg-gradient-to-r from-primary/10 to-blue-500/10 shadow-lg'
-                  : 'text-muted-foreground hover:text-foreground hover:bg-accent/50 hover:scale-105'
+                'pt-6 border-t border-border/50',
+                isMobileMenuOpen ? 'animate-menu-slide' : ''
               )}
-              onClick={(e) => {
-                e.preventDefault();
-                scrollToSection(section.id);
-              }}
-              style={{
-                animationDelay: `${index * 100}ms`,
-              }}
+              style={{ animationDelay: '350ms' }}
             >
-              <span className='flex items-center space-x-4 relative z-10'>
-                <span className='text-sm opacity-60 font-mono group-hover:opacity-100 transition-opacity duration-300'>
-                  {section.number}
-                </span>
-                <span className='group-hover:translate-x-1 transition-transform duration-300'>
-                  {section.name}
-                </span>
-              </span>
-              <div className='absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out' />
-            </a>
-          ))}
+              <Button
+                onClick={handleDownload}
+                className='w-full h-12 bg-primary text-primary-foreground hover:bg-primary/90 rounded-xl font-medium transition-all duration-300 group'
+              >
+                <Download className='w-4 h-4 mr-2 transition-transform duration-300 group-hover:-translate-y-0.5' />
+                Download {content.resumeText}
+              </Button>
+
+              {/* Contact Info */}
+              <div className='mt-6 text-center'>
+                <p className='text-xs text-muted-foreground'>
+                  Available for new opportunities
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
-        <div className='mt-8 pt-8 border-t border-border/50'>
-          <Button
-            className='w-full bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90 text-white rounded-2xl py-6 text-lg font-medium group relative overflow-hidden hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl'
-            onClick={() => {
-              const link = document.createElement('a');
-              if (roleKey === 'frontend') {
-                link.href = '/resumes/frontend-resume.pdf';
-              } else if (roleKey === 'backend') {
-                link.href = '/resumes/backend-resume.pdf';
-              } else {
-                link.href = '/resumes/fullstack-resume.pdf';
-              }
-              link.download = `${content.resumeText}.pdf`;
-              document.body.appendChild(link);
-              link.click();
-              document.body.removeChild(link);
-            }}
-          >
-            <Download className='mr-2 h-5 w-5 group-hover:scale-110 transition-transform duration-300' />
-            Download {content.resumeText}
-            <ArrowUpRight className='ml-2 h-4 w-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300' />
-            <div className='absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out' />
-          </Button>
-        </div>
+      </div>
+
+      {/* Scroll Progress Indicator */}
+      <div className='fixed top-0 left-0 right-0 h-0.5 z-[60]'>
+        <div
+          className='h-full bg-gradient-to-r from-primary to-primary/50 transition-all duration-150'
+          style={{
+            width: `${
+              typeof window !== 'undefined'
+                ? (window.scrollY /
+                    (document.documentElement.scrollHeight -
+                      window.innerHeight)) *
+                  100
+                : 0
+            }%`,
+          }}
+        />
       </div>
     </>
   );

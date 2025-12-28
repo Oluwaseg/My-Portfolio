@@ -4,6 +4,7 @@ import { AboutSection } from '@/components/About';
 import { Navbar } from '@/components/common/Navbar';
 import { ContactSection } from '@/components/Contact';
 import { ExperienceSection } from '@/components/Experience';
+import { Footer } from '@/components/footer';
 import { HeroSection } from '@/components/Hero';
 import { ProjectsSection } from '@/components/Projects';
 import { ThemeProvider } from '@/components/providers/ThemeProvider';
@@ -100,7 +101,7 @@ export default function Page() {
           </Head>
 
           <div className='relative min-h-screen bg-background text-foreground'>
-            <Navbar content={content} roleKey={roleKey} />
+            <Navbar />
             <main>
               <HeroSection content={content} />
               <AboutSection content={content} roleKey={roleKey} />
@@ -108,6 +109,7 @@ export default function Page() {
               <ProjectsSection />
               <ContactSection />
             </main>
+            <Footer />
           </div>
         </ThemeProvider>
       )}
