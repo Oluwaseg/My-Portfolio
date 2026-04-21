@@ -288,3 +288,31 @@
 .animate-fade-in {
   animation: fade-in 0.5s ease-out;
 }
+@keyframes float-left {
+  0%,
+  100% {
+    transform: translate(-20px, -50%) translateY(0px);
+  }
+  50% {
+    transform: translate(-20px, -50%) translateY(-15px);
+  }
+}
+
+.animate-float-left {
+  animation: float-left 6s ease-in-out infinite;
+  will-change: transform;
+}
+@keyframes float-right {
+  0%,
+  100% {
+    transform: translate(20px, -50%) translateY(0px);
+  }
+  50% {
+    transform: translate(20px, -50%) translateY(-15px);
+  }
+}
+
+.animate-float-right {
+  animation: float-right 6s ease-in-out infinite;
+  will-change: transform;
+}

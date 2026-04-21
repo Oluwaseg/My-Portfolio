@@ -4,6 +4,7 @@ import { hero_left_img, hero_right_img } from '@/assets/index';
 import { useLenis } from '@/components/SmoothScrollProvider';
 import { Button } from '@/components/ui/button';
 import type { roleContent, RoleKey } from '@/config/roleContent';
+import { useModal } from '@/contexts/ModalContext';
 import { AnimatedSubtitle } from '@/hooks/animated-subtitle';
 import { AutoTypingText } from '@/hooks/auto-typing-text';
 import {
@@ -17,7 +18,6 @@ import {
 } from 'lucide-react';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
-
 interface HeroSectionProps {
   content: (typeof roleContent)[RoleKey];
 }
@@ -26,7 +26,7 @@ export function HeroSection({ content }: HeroSectionProps) {
   const lenis = useLenis();
   const heroRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { isModalOpen, setIsModalOpen } = useModal();
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
@@ -96,19 +96,20 @@ export function HeroSection({ content }: HeroSectionProps) {
       username: '+234 904 809 5407',
     },
   ];
-
+  const parallaxX = (mousePosition.x - 50) * 0.05;
+  const parallaxY = (mousePosition.y - 50) * 0.05;
   return (
     <>
       <section
         id='hero'
         ref={heroRef}
-        className='relative min-h-screen mt-0 lg:mt-9 w-full flex items-center overflow-hidden'
+        className='relative min-h-screen w-full flex items-center overflow-hidden pt-20'
       >
         {/* Hero Background SVGs - Your original images */}
         <Image
           src={hero_left_img || '/placeholder.svg'}
           alt='Left Hero Background'
-          className='absolute left-0 top-1/2 -translate-y-1/2 opacity-50 pointer-events-none hidden lg:block'
+          className='absolute left-0 top-1/2 opacity-50 pointer-events-none hidden lg:block animate-float-left '
           width={450}
           height={287}
           priority
@@ -116,23 +117,35 @@ export function HeroSection({ content }: HeroSectionProps) {
         <Image
           src={hero_right_img || '/placeholder.svg'}
           alt='Right Hero Background'
-          className='absolute right-0 top-1/2 -translate-y-1/2 opacity-50 pointer-events-none hidden lg:block'
+          className='absolute right-0 top-1/2 opacity-50 pointer-events-none hidden lg:block animate-float-right'
           width={450}
           height={287}
           priority
         />
-
-        {/* Animated gradient background that follows mouse */}
+        {/* Gradient */}
         <div
-          className='absolute inset-0 opacity-30 transition-opacity duration-700'
+          className='absolute inset-0 z-10 pointer-events-none will-change-transform'
           style={{
-            background: `radial-gradient(800px circle at ${mousePosition.x}% ${mousePosition.y}%, hsl(var(--primary) / 0.15), transparent 50%)`,
+            background: `radial-gradient(
+      800px circle at ${mousePosition.x}% ${mousePosition.y}%,
+      oklch(0.72 0.13 195 / 0.25),
+      transparent 50%
+    )`,
           }}
         />
 
-        {/* Subtle grid */}
-        <div className='absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:72px_72px]' />
-
+        {/* Grid */}
+        <div
+          className='absolute inset-0 z-10 pointer-events-none transition-transform duration-200 ease-out'
+          style={{
+            transform: `translate(${parallaxX}px, ${parallaxY}px)`,
+            backgroundImage: `
+      linear-gradient(oklch(0.92 0.01 240 / 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, oklch(0.92 0.01 240 / 0.04) 1px, transparent 1px)
+    `,
+            backgroundSize: '72px 72px',
+          }}
+        />
         {/* Main Content */}
         <div className='relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-12 py-24 lg:py-0'>
           <div className='flex flex-col items-center text-center space-y-8'>
@@ -228,7 +241,7 @@ export function HeroSection({ content }: HeroSectionProps) {
               <Button
                 size='lg'
                 variant='outline'
-                className='group border-border/50 hover:border-primary/50 bg-background/30 backdrop-blur-sm hover:bg-primary/5 px-8 py-6 rounded-xl font-medium text-base transition-all duration-300'
+                className='group border-border/50 hover:border-primary/50 hover:text-white bg-background/30 backdrop-blur-sm hover:bg-primary/5 px-8 py-6 rounded-xl font-medium text-base transition-all duration-300'
                 onClick={() => setIsModalOpen(true)}
               >
                 <span className='flex items-center gap-2'>

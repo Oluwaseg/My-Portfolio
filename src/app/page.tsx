@@ -3,15 +3,18 @@
 import { AboutSection } from '@/components/About';
 import { Navbar } from '@/components/common/Navbar';
 import { ContactSection } from '@/components/Contact';
-import { ExperienceSection } from '@/components/Experience';
-import { Footer } from '@/components/footer';
+// import { ExperienceSection } from '@/components/Experience';
+import { Footer } from '@/components/common/footer';
 import { HeroSection } from '@/components/Hero';
 import { ProjectsSection } from '@/components/Projects';
 import { ThemeProvider } from '@/components/providers/ThemeProvider';
 import { RoleContentProvider } from '@/components/RoleContentProvider';
 import Head from 'next/head';
+import { useState } from 'react';
 
 export default function Page() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
     <RoleContentProvider>
       {({ content, roleKey }) => (
@@ -105,7 +108,7 @@ export default function Page() {
             <main>
               <HeroSection content={content} />
               <AboutSection content={content} roleKey={roleKey} />
-              <ExperienceSection content={content} />
+              {/* <ExperienceSection content={content} /> */}
               <ProjectsSection />
               <ContactSection />
             </main>

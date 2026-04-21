@@ -98,6 +98,7 @@ export function ProjectsSection() {
 
   return (
     <section
+      id='projects'
       className='w-full bg-background py-24 px-4 md:px-8'
       ref={containerRef}
     >

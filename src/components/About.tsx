@@ -191,10 +191,10 @@ const expertiseAreas = {
 };
 
 const stats = [
-  { label: 'Years Experience', value: 4, suffix: '+' },
+  { label: 'Years Experience', value: 5, suffix: '+' },
   { label: 'Projects Completed', value: 50, suffix: '+' },
-  { label: 'Performance Improvement', value: 30, suffix: '%' },
-  { label: 'User Satisfaction', value: 20, suffix: '%' },
+  { label: 'Performance Improvement', value: 60, suffix: '%' },
+  { label: 'User Satisfaction', value: 80, suffix: '%' },
 ];
 
 interface AboutSectionProps {
@@ -257,14 +257,14 @@ export function AboutSection({ content, roleKey }: AboutSectionProps) {
       className='relative min-h-screen w-full py-24 md:py-32 px-6 md:px-12 lg:px-24 overflow-hidden'
     >
       {/* Subtle gradient background */}
-      <div className='absolute inset-0 bg-gradient-to-b from-background via-background to-muted/20' />
+      <div className='absolute inset-0 bg-gradient-to-b from-background via-background to-accent/10' />
 
       {/* Grid pattern overlay */}
       <div
         className='absolute inset-0 opacity-[0.02]'
         style={{
           backgroundImage: `linear-gradient(var(--primary) 1px, transparent 1px), linear-gradient(90deg, var(--primary) 1px, transparent 1px)`,
-          backgroundSize: '60px 60px',
+          backgroundSize: '72px 72px',
         }}
       />
 

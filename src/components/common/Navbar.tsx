@@ -6,13 +6,14 @@ import { useRoleContent } from '@/hooks/useRoleContent';
 import { cn } from '@/lib/utils';
 import { ArrowUpRight, Download } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
 
 type SectionId = 'hero' | 'about' | 'experience' | 'projects' | 'contact';
 
 const sections: { id: SectionId; label: string }[] = [
   { id: 'about', label: 'About' },
-  { id: 'experience', label: 'Experience' },
+  // { id: 'experience', label: 'Experience' },
   { id: 'projects', label: 'Work' },
   { id: 'contact', label: 'Contact' },
 ];
@@ -28,8 +29,8 @@ export function Navbar() {
     roleKey === 'frontend'
       ? '/resumes/frontend-resume.pdf'
       : roleKey === 'backend'
-      ? '/resumes/backend-resume.pdf'
-      : '/resumes/fullstack-resume.pdf';
+        ? '/resumes/backend-resume.pdf'
+        : '/resumes/fullstack-resume.pdf';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -88,16 +89,19 @@ export function Navbar() {
       {/* Main Navbar */}
       <header
         className={cn(
-          'fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out',
+          'fixed top-0 left-0 right-0 z-50 h-20 transition-all duration-500 ease-out',
           isScrolled
             ? 'py-3 bg-background/60 backdrop-blur-xl border-b border-border/50'
-            : 'py-5 bg-transparent'
+            : 'py-5'
         )}
       >
         <nav className='container mx-auto max-w-6xl px-6'>
           <div className='flex items-center justify-between'>
             {/* Logo & Name */}
-            <a className='group flex items-center gap-3 animate-nav-slide-in'>
+            <Link
+              href='/'
+              className='group flex items-center gap-3 animate-nav-slide-in'
+            >
               <div className='relative'>
                 <div className='w-10 h-10 rounded-lg overflow-hidden bg-secondary/50 flex items-center justify-center transition-transform duration-300 group-hover:scale-105'>
                   <Image
@@ -114,13 +118,13 @@ export function Navbar() {
               </div>
               <div className='hidden sm:block'>
                 <p className='text-sm font-semibold text-foreground tracking-tight leading-none'>
-                  SOSTECH
+                  SAMUEL OLUWASEGUN
                 </p>
                 <p className='text-xs text-muted-foreground mt-0.5'>
                   {content.roleBadge}
                 </p>
               </div>
-            </a>
+            </Link>
 
             {/* Desktop Navigation - Centered */}
             <div

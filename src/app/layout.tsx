@@ -1,9 +1,11 @@
+import { CookieConsent } from '@/components/CookieConsent';
+import { ScrollToTop } from '@/components/ScrollToTop';
 import { SmoothScrollProvider } from '@/components/SmoothScrollProvider';
+import { ModalProvider } from '@/contexts/ModalContext';
 import type { Metadata } from 'next';
 import { Poppins, Roboto } from 'next/font/google';
 import type React from 'react';
 import './globals.css';
-
 const poppins = Poppins({
   subsets: ['latin'],
   weight: ['400', '600', '700'],
@@ -266,7 +268,11 @@ export default function RootLayout({
         />
       </head>
       <body className={`${poppins.variable} ${roboto.variable} font-sans`}>
-        <SmoothScrollProvider>{children}</SmoothScrollProvider>
+        <ModalProvider>
+          <SmoothScrollProvider>{children}</SmoothScrollProvider>
+        </ModalProvider>
+        <ScrollToTop />
+        <CookieConsent />
       </body>
     </html>
   );
