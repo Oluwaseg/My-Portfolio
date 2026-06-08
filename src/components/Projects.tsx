@@ -18,10 +18,13 @@ type Project = {
   technologies: string[];
   githubLink: string;
   liveLink: string;
-  image?: string;
-  longDescription?: string;
+  images: string[];
+  video?: string;
+  tags?: string[];
   featured?: boolean;
-  stats?: { stars: number; forks: number };
+  status?: 'completed' | 'in-progress' | 'archived';
+  createdAt?: string;
+  updatedAt?: string;
 };
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -217,7 +220,7 @@ export function ProjectsSection() {
               <div className='lg:col-span-6 relative aspect-[16/10] overflow-hidden bg-muted/10 border border-border group-hover:border-primary/20 transition-colors duration-500'>
                 <Image
                   src={
-                    project.image ||
+                    project.images?.[0] ||
                     `/placeholder.svg?height=600&width=1000&text=${project.title}`
                   }
                   alt={project.title}
