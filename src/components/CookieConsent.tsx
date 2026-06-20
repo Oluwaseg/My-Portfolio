@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { X } from 'lucide-react';
+import { ShieldCheck, X } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
@@ -49,8 +49,9 @@ export function CookieConsent() {
         </button>
 
         <div className='pr-8'>
-          <h3 className='text-lg font-semibold text-foreground mb-2'>
-            🍪 Cookie Consent
+          <h3 className='flex items-center gap-2 text-lg font-semibold text-foreground mb-2'>
+            <ShieldCheck className='w-5 h-5 text-primary' />
+            Cookie Consent
           </h3>
           <p className='text-sm text-muted-foreground mb-4 leading-relaxed'>
             We use cookies to enhance your browsing experience and analyze site

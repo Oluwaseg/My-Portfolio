@@ -166,7 +166,7 @@ export function ProjectsSection() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [filter, setFilter] = useState('all');
-
+  const sectionRef = useRef<HTMLElement>(null);
   useEffect(() => {
     (async () => {
       try {
@@ -225,7 +225,7 @@ export function ProjectsSection() {
     );
 
   return (
-    <section className='py-24 md:py-32'>
+    <section id='projects' ref={sectionRef} className='py-24 md:py-32'>
       <div className='container mx-auto px-6'>
         {/* Header */}
         <div className='mb-20 flex flex-col gap-10 lg:flex-row lg:items-end lg:justify-between'>

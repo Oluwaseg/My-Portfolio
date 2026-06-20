@@ -209,7 +209,7 @@ export function ContactSection() {
                   <p className='text-xs text-muted-foreground'>Projects</p>
                 </div>
                 <div>
-                  <p className='text-2xl font-bold text-primary'>5+</p>
+                  <p className='text-2xl font-bold text-primary'>3+</p>
                   <p className='text-xs text-muted-foreground'>Years Exp</p>
                 </div>
                 <div>

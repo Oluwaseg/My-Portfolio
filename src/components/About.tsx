@@ -187,11 +187,25 @@ const expertiseAreas = {
       icon: GitBranch,
       color: 'bg-amber-500/10 text-amber-400 border-amber-500/20',
     },
+    {
+      title: 'AI & Automation',
+      description:
+        'n8n workflow automation, OpenAI API integration, prompt-driven AI agents, and intelligent process orchestration across frontend and backend systems.',
+      technologies: [
+        'n8n',
+        'OpenAI',
+        'AI Agents',
+        'Workflow Automation',
+        'Prompt Engineering',
+      ],
+      icon: Lightbulb,
+      color: 'bg-fuchsia-500/10 text-fuchsia-400 border-fuchsia-500/20',
+    },
   ],
 };
 
 const stats = [
-  { label: 'Years Experience', value: 5, suffix: '+' },
+  { label: 'Years Experience', value: 3, suffix: '+' },
   { label: 'Projects Completed', value: 50, suffix: '+' },
   { label: 'Performance Improvement', value: 60, suffix: '%' },
   { label: 'User Satisfaction', value: 80, suffix: '%' },
