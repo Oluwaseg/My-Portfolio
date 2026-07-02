@@ -37,7 +37,7 @@ type Project = {
   updatedAt?: string;
 };
 
-const API_URL = process.env.VITE_API_URL;
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 const STATUS_STYLES: Record<
   NonNullable<Project['status']>,
